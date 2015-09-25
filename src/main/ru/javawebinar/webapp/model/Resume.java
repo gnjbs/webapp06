@@ -8,5 +8,5 @@ import java.util.Collection;
  */
 public class Resume {
     private String fullName;
-    private Collection<String> properties;
+    private Collection<String> contacts;
 }
