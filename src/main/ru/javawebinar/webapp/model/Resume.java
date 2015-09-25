@@ -9,4 +9,6 @@ import java.util.Collection;
 public class Resume {
     private String fullName;
     private Collection<String> contacts;
+    private Collection<Properties> properties;
+    private String objective;
 }
