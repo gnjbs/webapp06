@@ -7,4 +7,12 @@ public abstract class Properties  {
     private String name;
    // private String years;
     private String description;
+
+    @Override
+    public String toString() {
+        return "Properties{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }
