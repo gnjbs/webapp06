@@ -10,7 +10,7 @@ import java.util.Collection;
  */
 public class ArrayStorage implements IStore {
     private static final int MAX_LENGTH = 10000;
-
+//Реалзовать методы
     private Resume[] array = new Resume[MAX_LENGTH];
 
     @Override
