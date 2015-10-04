@@ -29,7 +29,7 @@ public class Resume {
     public Map<SectionType, Section> getSections() {
         return sections;
     }
-
+//
     @Override
     public boolean equals(Object o) {
         if (this == o) {
