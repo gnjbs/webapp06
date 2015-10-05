@@ -31,14 +31,14 @@ public class Main {
         Resume resume1 = new Resume(testMapContact1, testMapSection1);
 
         Map<ContactType, String> testMapContact2 = new HashMap<>();
-        testMapContact2.put(ContactType.HOME_PHONE, "525525757");
-        testMapContact2.put(ContactType.MAIL, "dadad@ya.ru");
+        testMapContact2.put(ContactType.HOME_PHONE, "3232323");
+        testMapContact2.put(ContactType.MAIL, "imnumber3@ya.ru");
         Map<SectionType, Section> testMapSection2 = new HashMap<>();
         Section educationSection2 = new TextSection("Весьма квалифицирован");
         testMapSection2.put(SectionType.QUALIFICATIONS, educationSection);
         Resume resume2 = new Resume("resume2", testMapContact2, testMapSection2);
 
-
+        Resume resume3 = new Resume("resume2", null, null);
 
         arrayStorage.save(resume);
         arrayStorage.save(resume1);
@@ -47,15 +47,18 @@ public class Main {
         System.out.println("Размер массива = " + arrayStorage.size());
 
         System.out.println("load резюме с UUID = resume2 = " + arrayStorage.load("resume2").toString());
-        System.out.println();
-        System.out.println("Весь список \n" + arrayStorage.getAllSorted());
 
-        Resume resume3 = new Resume("resume2",null,null);
+        System.out.println("Текущий размер списка" + arrayStorage.size() + " Весь список \n" + arrayStorage.getAllSorted());
+
+
         arrayStorage.update(resume3);
 
-        //arrayStorage.update(resume);
+
         System.out.println("Весь список после обновления \n" + arrayStorage.getAllSorted());
         arrayStorage.delete("resume2");
-        System.out.println("Весь список после удаления \n" + arrayStorage.getAllSorted());
+        System.out.println("Размер списка после удаления элемента равен " + arrayStorage.size()
+                + " Весь список после удаления \n" + arrayStorage.getAllSorted());
+        arrayStorage.clear();
+        System.out.println(arrayStorage.getAllSorted());
     }
 }

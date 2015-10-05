@@ -15,13 +15,8 @@ public class ArrayStorage implements IStore {
 
     @Override
     public void clear() {
-        //Тут возможны две реализации: 1. Логическое удаление 2. Реальное удаление
-
-        array = null;//2
-
-        /*for (Resume r : array) {
-            r = null;
-        }*/
+        System.out.println("Лист очищен...");
+        array = null;
     }
 
     @Override
@@ -36,15 +31,13 @@ public class ArrayStorage implements IStore {
 
     @Override
     public void update(Resume r) {
-        for (Resume res : array) {
-            if (res != null) {
-                if (res.getUuid().equals(r.getUuid())) {
-                    System.out.println("ok");
-                    res = r;
-                    System.out.println("fasdfa");
-                } else {
-                    System.out.println("Не нашлось совпадений!");
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] != null) {
+                if (array[i].getUuid().equals(r.getUuid())) {
+                    array[i] = r;
                 }
+            } else if (array[i] == null) {
+                break;
             }
         }
     }
@@ -69,22 +62,30 @@ public class ArrayStorage implements IStore {
                 if (array[i].getUuid().equals(uuid)) {
                     array[i] = null;
                 }
+            } else if (array[i] == null) {
+                break;
             }
         }
     }
 
     @Override
     public Collection<Resume> getAllSorted() {
-
-        ArrayList<Resume> arrayAsList = new ArrayList<>();
-        arrayAsList.clear();
-        for (Resume r : array) {
-            if (r != null) {
-                arrayAsList.add(r);
+        try {
+            ArrayList<Resume> arrayAsList = new ArrayList<>();
+            arrayAsList.clear();
+            for (Resume r : array) {
+                if (r != null) {
+                    arrayAsList.add(r);
+                }
             }
+            Collections.sort(arrayAsList);
+            return arrayAsList;
+
+        } catch (NullPointerException e) {
+            e.getLocalizedMessage();
         }
-        Collections.sort(arrayAsList);
-        return arrayAsList;
+
+        return null;
     }
 
     @Override
