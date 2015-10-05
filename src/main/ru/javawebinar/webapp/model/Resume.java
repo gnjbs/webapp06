@@ -7,7 +7,8 @@ import java.util.UUID;
  * GKislin
  * 18.09.2015.
  */
-public class Resume {
+public class Resume implements Comparable {
+
     private final String uuid;
     private final Map<ContactType, String> contacts;
     private final Map<SectionType, Section> sections;
@@ -30,6 +31,12 @@ public class Resume {
         return sections;
     }
 //
+
+
+    public String getUuid() {
+        return uuid;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -57,5 +64,20 @@ public class Resume {
         result = 31 * result + contacts.hashCode();
         result = 31 * result + sections.hashCode();
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Resume{" +
+                "uuid='" + uuid + '\'' +
+                ", contacts=" + contacts +
+                ", sections=" + sections +
+                '}';
+    }
+
+
+    @Override
+    public int compareTo(Object o) {
+        return 0;
     }
 }
