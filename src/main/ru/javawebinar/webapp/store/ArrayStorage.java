@@ -36,9 +36,9 @@ public class ArrayStorage implements IStore {
                 if (array[i].getUuid().equals(r.getUuid())) {
                     array[i] = r;
                 }
-            } else if (array[i] == null) {
+            }/* else if (array[i] == null) {
                 break;
-            }
+            }*/
         }
     }
 
