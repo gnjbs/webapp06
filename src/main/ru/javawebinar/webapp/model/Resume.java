@@ -7,18 +7,20 @@ import java.util.UUID;
  * GKislin
  * 18.09.2015.
  */
-public class Resume implements Comparable {
+public class Resume implements Comparable<Resume> {
 
     private final String uuid;
+    private final String fullName;
     private final Map<ContactType, String> contacts;
     private final Map<SectionType, Section> sections;
 
-    public Resume(Map<ContactType, String> contacts, Map<SectionType, Section> sections) {
-        this(UUID.randomUUID().toString(), contacts, sections);
+    public Resume(Map<ContactType, String> contacts, Map<SectionType, Section> sections, String fullName) {
+        this(UUID.randomUUID().toString(), fullName, contacts, sections);
     }
 
-    public Resume(String uuid, Map<ContactType, String> contacts, Map<SectionType, Section> sections) {
+    public Resume(String uuid, String fullName, Map<ContactType, String> contacts, Map<SectionType, Section> sections) {
         this.uuid = uuid;
+        this.fullName = fullName;
         this.contacts = contacts;
         this.sections = sections;
     }
@@ -70,6 +72,7 @@ public class Resume implements Comparable {
     public String toString() {
         return "Resume{" +
                 "uuid='" + uuid + '\'' +
+                ", fullName='" + fullName + '\'' +
                 ", contacts=" + contacts +
                 ", sections=" + sections +
                 '}';
@@ -77,7 +80,8 @@ public class Resume implements Comparable {
 
 
     @Override
-    public int compareTo(Object o) {
-        return 0;
+    public int compareTo(Resume o) {
+        return this.fullName.compareTo(o.fullName);
     }
 }
+

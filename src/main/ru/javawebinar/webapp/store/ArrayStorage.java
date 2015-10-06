@@ -22,8 +22,8 @@ public class ArrayStorage implements IStore {
 
     @Override
     public void save(Resume r) {
-        boolean isContains = isContains(array,r);
-        boolean isContainsNull = isContains(array,null);
+        boolean isContains = isContains(array, r);
+        boolean isContainsNull = isContains(array, null);
 
         if (!isContains && isContainsNull) {
             for (int i = 0; i < array.length; i++) {
@@ -32,23 +32,23 @@ public class ArrayStorage implements IStore {
                     break;
                 }
             }
-        } else if (isContains && !isContainsNull) {
+        } else if (isContains) {
             System.out.println("Добавление элемента невозможно");
         }
     }
 
     @Override
     public void update(Resume r) {
-        boolean isContains = isContains(array,r);
-        if (!isContains){
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] != null) {
-                if (r.getUuid().equals(array[i].getUuid())) {
-                    array[i] = r;
+        boolean isContains = isContains(array, r);
+        if (isContains) {
+            for (int i = 0; i < array.length; i++) {
+                if (array[i] != null) {
+                    if (r.getUuid().equals(array[i].getUuid())) {
+                        array[i] = r;
+                    }
                 }
             }
-        }
-        }else if (isContains){
+        } else if (!isContains) {
             System.out.println("Такой элемент уже есть в списке");
         }
     }
@@ -84,6 +84,7 @@ public class ArrayStorage implements IStore {
         if (array != null) {
             List<Resume> list = new ArrayList<Resume>(Arrays.asList(array));
             list.removeAll(Collections.singleton(null));
+            Collections.sort(list);
             return list;
         } else return null;
     }
@@ -99,7 +100,8 @@ public class ArrayStorage implements IStore {
         }
         return size;
     }
-    private boolean isContains(Resume[] array,Resume resume){
+
+    private boolean isContains(Resume[] array, Resume resume) {
         return Arrays.asList(array).contains(resume);
     }
 }
