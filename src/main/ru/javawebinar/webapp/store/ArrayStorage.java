@@ -40,7 +40,7 @@ public class ArrayStorage implements IStore {
     @Override
     public void update(Resume r) {
         boolean isContains = isContains(array, r);
-        if (isContains) {
+        if (!isContains) {
             for (int i = 0; i < array.length; i++) {
                 if (array[i] != null) {
                     if (r.getUuid().equals(array[i].getUuid())) {
@@ -48,7 +48,7 @@ public class ArrayStorage implements IStore {
                     }
                 }
             }
-        } else if (!isContains) {
+        } else if (isContains) {
             System.out.println("Такой элемент уже есть в списке");
         }
     }
