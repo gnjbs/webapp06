@@ -43,13 +43,13 @@ public class Main {
         arrayStorage.save(resume);
         arrayStorage.save(resume1);
         arrayStorage.save(resume2);
+        arrayStorage.save(resume);
 
         System.out.println("Размер массива = " + arrayStorage.size());
 
         System.out.println("load резюме с UUID = resume2 = " + arrayStorage.load("resume2").toString());
 
         System.out.println("Текущий размер списка" + arrayStorage.size() + " Весь список \n" + arrayStorage.getAllSorted());
-
 
         arrayStorage.update(resume3);
 
@@ -59,6 +59,8 @@ public class Main {
         System.out.println("Размер списка после удаления элемента равен " + arrayStorage.size()
                 + " Весь список после удаления \n" + arrayStorage.getAllSorted());
         arrayStorage.clear();
+        arrayStorage.save(resume);
+        arrayStorage.save(resume1);
         System.out.println(arrayStorage.getAllSorted());
     }
 }

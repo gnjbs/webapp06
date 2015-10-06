@@ -3,6 +3,7 @@ package main.ru.javawebinar.webapp.store;
 import main.ru.javawebinar.webapp.model.Resume;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * GKislin
@@ -16,29 +17,39 @@ public class ArrayStorage implements IStore {
     @Override
     public void clear() {
         System.out.println("Лист очищен...");
-        array = null;
+        Arrays.fill(array, null);
     }
 
     @Override
     public void save(Resume r) {
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] == null) {
-                array[i] = r;
-                break;
+        boolean isContains = isContains(array,r);
+        boolean isContainsNull = isContains(array,null);
+
+        if (!isContains && isContainsNull) {
+            for (int i = 0; i < array.length; i++) {
+                if (array[i] == null) {
+                    array[i] = r;
+                    break;
+                }
             }
+        } else if (isContains && !isContainsNull) {
+            System.out.println("Добавление элемента невозможно");
         }
     }
 
     @Override
     public void update(Resume r) {
+        boolean isContains = isContains(array,r);
+        if (!isContains){
         for (int i = 0; i < array.length; i++) {
             if (array[i] != null) {
-                if (array[i].getUuid().equals(r.getUuid())) {
+                if (r.getUuid().equals(array[i].getUuid())) {
                     array[i] = r;
                 }
-            }/* else if (array[i] == null) {
-                break;
-            }*/
+            }
+        }
+        }else if (isContains){
+            System.out.println("Такой элемент уже есть в списке");
         }
     }
 
@@ -57,40 +68,29 @@ public class ArrayStorage implements IStore {
 
     @Override
     public void delete(String uuid) {
+
         for (int i = 0; i < array.length; i++) {
             if (array[i] != null) {
                 if (array[i].getUuid().equals(uuid)) {
                     array[i] = null;
                 }
-            } else if (array[i] == null) {
-                break;
             }
         }
     }
 
     @Override
     public Collection<Resume> getAllSorted() {
-        try {
-            ArrayList<Resume> arrayAsList = new ArrayList<>();
-            arrayAsList.clear();
-            for (Resume r : array) {
-                if (r != null) {
-                    arrayAsList.add(r);
-                }
-            }
-            Collections.sort(arrayAsList);
-            return arrayAsList;
 
-        } catch (NullPointerException e) {
-            e.getLocalizedMessage();
-        }
-
-        return null;
+        if (array != null) {
+            List<Resume> list = new ArrayList<Resume>(Arrays.asList(array));
+            list.removeAll(Collections.singleton(null));
+            return list;
+        } else return null;
     }
 
     @Override
     public int size() {
-        //также возможно array.length
+
         int size = 0;
         for (Resume r : array) {
             if (r != null) {
@@ -98,5 +98,8 @@ public class ArrayStorage implements IStore {
             }
         }
         return size;
+    }
+    private boolean isContains(Resume[] array,Resume resume){
+        return Arrays.asList(array).contains(resume);
     }
 }
