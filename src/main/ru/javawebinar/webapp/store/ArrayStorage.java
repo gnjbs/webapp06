@@ -39,7 +39,7 @@ public class ArrayStorage implements IStore {
 
     @Override
     public void update(Resume r) {
-        boolean isContains = isContains(array, r);
+       boolean isContains = isContains(array, r);
         if (!isContains) {
             for (int i = 0; i < array.length; i++) {
                 if (array[i] != null) {
@@ -49,8 +49,7 @@ public class ArrayStorage implements IStore {
                 }
             }
         } else if (isContains) {
-            System.out.println("Такой элемент уже есть в списке");
-        }
+            this.save(r);        }
     }
 
     @Override

@@ -27,7 +27,7 @@ public class Main {
         testMapContact1.put(ContactType.MAIL, "t@ya.ru");
         Map<SectionType, Section> testMapSection1 = new HashMap<>();
         Section educationSection1 = new TextSection("Достиг того-то");
-        testMapSection1.put(SectionType.ACHIEVEMENT, educationSection);
+        testMapSection1.put(SectionType.ACHIEVEMENT, educationSection1);
         Resume resume1 = new Resume(testMapContact1, testMapSection1, "Иван Иванович ");
 
         Map<ContactType, String> testMapContact2 = new HashMap<>();
@@ -35,10 +35,10 @@ public class Main {
         testMapContact2.put(ContactType.MAIL, "imnumber3@ya.ru");
         Map<SectionType, Section> testMapSection2 = new HashMap<>();
         Section educationSection2 = new TextSection("Весьма квалифицирован");
-        testMapSection2.put(SectionType.QUALIFICATIONS, educationSection);
+        testMapSection2.put(SectionType.QUALIFICATIONS, educationSection2);
         Resume resume2 = new Resume("resume2", "Анатолий Михайлович", testMapContact2, testMapSection2);
 
-        Resume resume3 = new Resume("resume2", "Сергей Сергеевич", null, null);
+        Resume resume3 = new Resume("resume2", "Сергей Сергеевич", testMapContact2, testMapSection2);
 
         arrayStorage.save(resume);
         arrayStorage.save(resume1);
