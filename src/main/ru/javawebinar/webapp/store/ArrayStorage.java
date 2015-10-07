@@ -10,7 +10,7 @@ import java.util.*;
  */
 public class ArrayStorage implements IStore {
     private static final int MAX_LENGTH = 10000;
-    private static int size = 0;
+
     private Resume[] array = new Resume[MAX_LENGTH];
 
     @Override
@@ -23,13 +23,8 @@ public class ArrayStorage implements IStore {
     public void save(Resume r) {
         int index = getIndexResume(array, r);
         if (index == -1) {
-            for (int i = 0; i < array.length; i++) {
-                if (array[i] == null) {
-                    array[i] = r;
-                    System.out.println("Объект " + r.toString() + " сохранен в массиве");
-                    break;
-                }
-            }
+            int size = this.size();
+            array[size] = r;
         } else {
             throw new ArrayStoreException();
         }
@@ -82,13 +77,16 @@ public class ArrayStorage implements IStore {
 
     @Override
     public int size() {
-        size = 0;
-        for (Resume r : array) {
-            if (r != null) {
-                size++;
+        if (array != null) {
+            int size = 0;
+            for (Resume r : array) {
+                if (r != null) {
+                    size++;
+                }
             }
+            return size;
         }
-        return size;
+        return 0;
     }
 
     private int getIndexResume(Resume[] array, Resume resume) {
