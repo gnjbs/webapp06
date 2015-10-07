@@ -77,20 +77,16 @@ public class ArrayStorage implements IStore {
 
     @Override
     public int size() {
-        if (array != null) {
-            int size = 0;
-            for (Resume r : array) {
-                if (r != null) {
-                    size++;
-                }
+        int size = 0;
+        for (Resume r : array) {
+            if (r != null) {
+                size++;
             }
-            return size;
         }
-        return 0;
+        return size;
     }
 
     private int getIndexByUuid(String uuid) {
-
         for (int i = 0; i < array.length; i++) {
             if (array[i] != null && uuid.equals(array[i].getUuid())) {
                 return i;
