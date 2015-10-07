@@ -10,7 +10,7 @@ import java.util.*;
  */
 public class ArrayStorage implements IStore {
     private static final int MAX_LENGTH = 10000;
-
+    private static int size = 0;
     private Resume[] array = new Resume[MAX_LENGTH];
 
     @Override
@@ -21,8 +21,8 @@ public class ArrayStorage implements IStore {
 
     @Override
     public void save(Resume r) {
-        int contain = isContains(array, r);
-        if (contain == -1) {
+        int index = getIndexResume(array, r);
+        if (index == -1) {
             for (int i = 0; i < array.length; i++) {
                 if (array[i] == null) {
                     array[i] = r;
@@ -31,50 +31,47 @@ public class ArrayStorage implements IStore {
                 }
             }
         } else {
-            throw new ArrayIndexOutOfBoundsException();
+            throw new ArrayStoreException();
         }
-
     }
 
     @Override
     public void update(Resume r) {
-        int contain = isContains(array, r);
-        if (contain == -1) {
+        int index = getIndexResume(array, r);
+        if (index == -1) {
             throw new NoSuchElementException();
         } else {
-            array[contain] = r;
+            array[index] = r;
         }
-
     }
 
     @Override
     public Resume load(String uuid) {
-
-        for (Resume res : array)
-            if (res != null) {
-                if (uuid.equals(res.getUuid())) {
-                    System.out.println("Элемент найден");
-                    return res;
-                }
-            }
-        return null;
+        int index = getIndexByUuid(array, uuid);
+        if (index >= 0) {
+            return array[index];
+        } else {
+            return null;
+        }
     }
 
     @Override
     public void delete(String uuid) {
 
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] != null) {
-                if (array[i].getUuid().equals(uuid)) {
-                    array[i] = null;
-                }
-            }
+        int index = getIndexByUuid(array, uuid);
+        if (index >= 0 && index < array.length) {
+            Resume[] copy = new Resume[array.length - 1];
+            System.arraycopy(array, 0, copy, 0, index);
+            System.arraycopy(array, index + 1, copy, index, array.length - index - 1);
+            array = copy;
+        } else {
+            throw new NoSuchElementException();
         }
+
     }
 
     @Override
     public Collection<Resume> getAllSorted() {
-
         if (array != null) {
             List<Resume> list = new ArrayList<Resume>(Arrays.asList(array));
             list.removeAll(Collections.singleton(null));
@@ -85,8 +82,7 @@ public class ArrayStorage implements IStore {
 
     @Override
     public int size() {
-
-        int size = 0;
+        size = 0;
         for (Resume r : array) {
             if (r != null) {
                 size++;
@@ -95,9 +91,18 @@ public class ArrayStorage implements IStore {
         return size;
     }
 
-    private int isContains(Resume[] array, Resume resume) {
+    private int getIndexResume(Resume[] array, Resume resume) {
         for (int i = 0; i < array.length; i++) {
             if (resume.equals(array[i])) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private int getIndexByUuid(Resume[] array, String uuid) {
+        for (int i = 0; i < array.length; i++) {
+            if (uuid.equals(array[i].getUuid())) {
                 return i;
             }
         }
