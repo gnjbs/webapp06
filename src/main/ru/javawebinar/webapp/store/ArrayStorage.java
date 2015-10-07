@@ -21,24 +21,25 @@ public class ArrayStorage implements IStore {
 
     @Override
     public void save(Resume r) {
-        boolean contain = isContains(array, r);
-        if (!contain) {
+        int contain = isContains(array, r);
+        if (contain == -1) {
             for (int i = 0; i < array.length; i++) {
                 if (array[i] == null) {
                     array[i] = r;
+                    System.out.println("Объект " + r.toString() + " сохранен в массиве");
                     break;
                 }
             }
         } else {
-            System.out.println("Такой элмент уже присутствует в массиве");
+            throw new ArrayIndexOutOfBoundsException();
         }
 
     }
 
     @Override
     public void update(Resume r) {
-        boolean contain = isContains(array, r);
-        if (contain) {
+        int contain = isContains(array, r);
+        if (contain > -1) {
             for (int i = 0; i < array.length; i++) {
                 if (array[i] != null) {
                     if (r.getUuid().equals(array[i].getUuid())) {
@@ -48,7 +49,7 @@ public class ArrayStorage implements IStore {
             }
 
         } else {
-            this.save(r);
+            throw new NoSuchElementException();
         }
 
     }
@@ -68,6 +69,7 @@ public class ArrayStorage implements IStore {
 
     @Override
     public void delete(String uuid) {
+
 
         for (int i = 0; i < array.length; i++) {
             if (array[i] != null) {
@@ -101,12 +103,12 @@ public class ArrayStorage implements IStore {
         return size;
     }
 
-    private boolean isContains(Resume[] array, Resume resume) {
-        for (Resume res : array) {
-            if (resume.equals(res) && res != null) {
-                return true;
+    private int isContains(Resume[] array, Resume resume) {
+        for (int i = 0; i < array.length; i++) {
+            if (resume.equals(array[i])) {
+                return i;
             }
         }
-        return false;
+        return -1;
     }
 }
