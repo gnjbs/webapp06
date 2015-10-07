@@ -68,7 +68,7 @@ public class ArrayStorage implements IStore {
 
     @Override
     public void delete(String uuid) {
-        System.out.println(Arrays.binarySearch(array,uuid));
+
         for (int i = 0; i < array.length; i++) {
             if (array[i] != null) {
                 if (array[i].getUuid().equals(uuid)) {
