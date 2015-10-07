@@ -3,7 +3,6 @@ package main.ru.javawebinar.webapp.store;
 import main.ru.javawebinar.webapp.model.Resume;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * GKislin
@@ -30,7 +29,7 @@ public class ArrayStorage implements IStore {
                     break;
                 }
             }
-        } else if (contain) {
+        } else {
             System.out.println("Такой элмент уже присутствует в массиве");
         }
 
@@ -47,7 +46,8 @@ public class ArrayStorage implements IStore {
                     }
                 }
             }
-        }else if (!contain){
+
+        } else {
             this.save(r);
         }
 
@@ -68,7 +68,7 @@ public class ArrayStorage implements IStore {
 
     @Override
     public void delete(String uuid) {
-
+        System.out.println(Arrays.binarySearch(array,uuid));
         for (int i = 0; i < array.length; i++) {
             if (array[i] != null) {
                 if (array[i].getUuid().equals(uuid)) {
