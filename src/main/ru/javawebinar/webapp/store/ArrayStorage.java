@@ -39,17 +39,10 @@ public class ArrayStorage implements IStore {
     @Override
     public void update(Resume r) {
         int contain = isContains(array, r);
-        if (contain > -1) {
-            for (int i = 0; i < array.length; i++) {
-                if (array[i] != null) {
-                    if (r.getUuid().equals(array[i].getUuid())) {
-                        array[i] = r;
-                    }
-                }
-            }
-
-        } else {
+        if (contain == -1) {
             throw new NoSuchElementException();
+        } else {
+            array[contain] = r;
         }
 
     }
@@ -60,7 +53,7 @@ public class ArrayStorage implements IStore {
         for (Resume res : array)
             if (res != null) {
                 if (uuid.equals(res.getUuid())) {
-                    System.out.println("Нашел");
+                    System.out.println("Элемент найден");
                     return res;
                 }
             }
@@ -69,7 +62,6 @@ public class ArrayStorage implements IStore {
 
     @Override
     public void delete(String uuid) {
-
 
         for (int i = 0; i < array.length; i++) {
             if (array[i] != null) {
