@@ -21,7 +21,7 @@ public class ArrayStorage implements IStore {
 
     @Override
     public void save(Resume r) {
-        int index = getIndexResume(r);
+        int index = getIndexByUuid(r.getUuid());
         if (index == -1) {
             int size = this.size();
             array[size] = r;
@@ -32,7 +32,7 @@ public class ArrayStorage implements IStore {
 
     @Override
     public void update(Resume r) {
-        int index = getIndexResume(r);
+        int index = getIndexByUuid(r.getUuid());
         if (index == -1) {
             throw new NoSuchElementException();
         } else {
@@ -89,18 +89,10 @@ public class ArrayStorage implements IStore {
         return 0;
     }
 
-    private int getIndexResume(Resume resume) {
-        for (int i = 0; i < array.length; i++) {
-            if (resume.equals(array[i])) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     private int getIndexByUuid(String uuid) {
+
         for (int i = 0; i < array.length; i++) {
-            if (uuid.equals(array[i].getUuid())) {
+            if (array[i] != null && uuid.equals(array[i].getUuid())) {
                 return i;
             }
         }
