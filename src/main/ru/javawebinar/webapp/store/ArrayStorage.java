@@ -26,7 +26,7 @@ public class ArrayStorage implements IStore {
             array[size] = r;
             size++;
         } else {
-            throw new ArrayStoreException();
+            System.err.println("Невозможно сохранить");
         }
     }
 
@@ -68,7 +68,7 @@ public class ArrayStorage implements IStore {
     public Collection<Resume> getAllSorted() {
         if (array != null) {
             List<Resume> list = new ArrayList<Resume>(Arrays.asList(array));
-            list.removeAll(Collections.singleton(null));
+            list.removeIf(Objects::isNull);
             Collections.sort(list);
             return list;
         } else return null;

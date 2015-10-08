@@ -45,7 +45,7 @@ public class Main {
         arrayStorage.save(resume1);
         arrayStorage.save(resume2);
         arrayStorage.save(resume4);
-       // arrayStorage.save(resume);
+        arrayStorage.save(resume);
 
         System.out.println("Размер массива = " + arrayStorage.size());
 
