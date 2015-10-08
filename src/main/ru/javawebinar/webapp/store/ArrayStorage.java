@@ -17,6 +17,7 @@ public class ArrayStorage implements IStore {
     public void clear() {
         System.out.println("Лист очищен...");
         Arrays.fill(array, null);
+        size = 0;
     }
 
     @Override
@@ -79,8 +80,8 @@ public class ArrayStorage implements IStore {
     }
 
     private int getIndexByUuid(String uuid) {
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] != null && uuid.equals(array[i].getUuid())) {
+        for (int i = 0; i < size; i++) {
+            if (uuid.equals(array[i].getUuid())) {
                 return i;
             }
         }
