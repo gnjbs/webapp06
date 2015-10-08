@@ -38,11 +38,13 @@ public class Main {
         testMapSection2.put(SectionType.QUALIFICATIONS, educationSection2);
         Resume resume2 = new Resume("resume2", "Анатолий Михайлович", testMapContact2, testMapSection2);
 
-        Resume resume3 = new Resume("resume2", "Сергей Сергеевич", testMapContact2, testMapSection2);
+        Resume resume3 = new Resume("resume2", "Армен", testMapContact2, testMapSection2);
+        Resume resume4 = new Resume("resume23", "v", testMapContact2, testMapSection2);
 
         arrayStorage.save(resume);
         arrayStorage.save(resume1);
         arrayStorage.save(resume2);
+        arrayStorage.save(resume4);
        // arrayStorage.save(resume);
 
         System.out.println("Размер массива = " + arrayStorage.size());
@@ -55,7 +57,7 @@ public class Main {
 
 
         System.out.println("Весь список после обновления \n" + arrayStorage.getAllSorted());
-        arrayStorage.delete("resume2");
+        arrayStorage.delete("resume23");
         System.out.println("Размер списка после удаления элемента равен " + arrayStorage.size()
                 + " Весь список после удаления \n" + arrayStorage.getAllSorted());
         arrayStorage.clear();

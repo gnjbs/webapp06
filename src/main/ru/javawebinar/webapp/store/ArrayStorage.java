@@ -10,7 +10,7 @@ import java.util.*;
  */
 public class ArrayStorage implements IStore {
     private static final int MAX_LENGTH = 10000;
-
+    private static int size = 0;
     private Resume[] array = new Resume[MAX_LENGTH];
 
     @Override
@@ -23,8 +23,8 @@ public class ArrayStorage implements IStore {
     public void save(Resume r) {
         int index = getIndexByUuid(r.getUuid());
         if (index == -1) {
-            int size = this.size();
             array[size] = r;
+            size++;
         } else {
             throw new ArrayStoreException();
         }
@@ -55,10 +55,9 @@ public class ArrayStorage implements IStore {
 
         int index = getIndexByUuid(uuid);
         if (index >= 0 && index < array.length) {
-            Resume[] copy = new Resume[array.length - 1];
-            System.arraycopy(array, 0, copy, 0, index);
-            System.arraycopy(array, index + 1, copy, index, array.length - index - 1);
-            array = copy;
+            System.arraycopy(array, index + 1, array, index, array.length - index - 1);
+            System.out.println(array.length);
+            size--;
         } else {
             throw new NoSuchElementException();
         }
@@ -77,12 +76,6 @@ public class ArrayStorage implements IStore {
 
     @Override
     public int size() {
-        int size = 0;
-        for (Resume r : array) {
-            if (r != null) {
-                size++;
-            }
-        }
         return size;
     }
 
