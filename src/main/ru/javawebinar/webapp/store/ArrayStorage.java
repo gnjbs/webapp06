@@ -57,7 +57,6 @@ public class ArrayStorage implements IStore {
         int index = getIndexByUuid(uuid);
         if (index >= 0 && index < array.length) {
             System.arraycopy(array, index + 1, array, index, size);
-            System.out.println(array.length);
             size--;
         } else {
             throw new NoSuchElementException();
