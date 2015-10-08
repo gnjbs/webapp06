@@ -67,10 +67,9 @@ public class ArrayStorage implements IStore {
     @Override
     public Collection<Resume> getAllSorted() {
         if (array != null) {
-            List<Resume> list = new ArrayList<Resume>(Arrays.asList(array));
-            list.removeIf(Objects::isNull);
-            Collections.sort(list);
-            return list;
+            Resume[] copy = Arrays.copyOf(array, size);
+            Arrays.sort(copy,0,copy.length);
+            return Arrays.asList(copy);
         } else return null;
     }
 
