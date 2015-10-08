@@ -68,7 +68,7 @@ public class ArrayStorage implements IStore {
     public Collection<Resume> getAllSorted() {
         if (array != null) {
             Resume[] copy = Arrays.copyOf(array, size);
-            Arrays.sort(copy,0,copy.length);
+            Arrays.sort(copy, 0, copy.length);
             return Arrays.asList(copy);
         } else return null;
     }
