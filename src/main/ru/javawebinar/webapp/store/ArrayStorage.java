@@ -15,7 +15,7 @@ public class ArrayStorage implements IStore {
 
     @Override
     public void clear() {
-        System.out.println("Лист очищен...");
+        System.err.println("Лист очищен...");
         Arrays.fill(array, null);
         size = 0;
     }
@@ -68,7 +68,7 @@ public class ArrayStorage implements IStore {
     public Collection<Resume> getAllSorted() {
         if (array != null) {
             Resume[] copy = Arrays.copyOf(array, size);
-            Arrays.sort(copy, 0, copy.length);
+            Arrays.sort(copy, 0, size);
             return Arrays.asList(copy);
         } else return null;
     }
