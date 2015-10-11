@@ -20,7 +20,7 @@ public class Main {
         Map<SectionType, Section> testMapSection = new HashMap<>();
         Section educationSection = new TextSection("Учился где то...");
         testMapSection.put(SectionType.EDUCATION, educationSection);
-        Resume resume = new Resume(testMapContact, testMapSection, "Артур Сергеевич");
+        Resume resume = new Resume("Артур Сергеевич");
 
         Map<ContactType, String> testMapContact1 = new HashMap<>();
         testMapContact1.put(ContactType.HOME_PHONE, "5255235757");
@@ -28,7 +28,7 @@ public class Main {
         Map<SectionType, Section> testMapSection1 = new HashMap<>();
         Section educationSection1 = new TextSection("Достиг того-то");
         testMapSection1.put(SectionType.ACHIEVEMENT, educationSection1);
-        Resume resume1 = new Resume(testMapContact1, testMapSection1, "Иван Иванович ");
+        Resume resume1 = new Resume("Иван Иванович");
 
         Map<ContactType, String> testMapContact2 = new HashMap<>();
         testMapContact2.put(ContactType.HOME_PHONE, "3232323");
@@ -36,10 +36,11 @@ public class Main {
         Map<SectionType, Section> testMapSection2 = new HashMap<>();
         Section educationSection2 = new TextSection("Весьма квалифицирован");
         testMapSection2.put(SectionType.QUALIFICATIONS, educationSection2);
-        Resume resume2 = new Resume("resume2", "Анатолий Михайлович", testMapContact2, testMapSection2);
+        Resume resume2 = new Resume("Анатолий Михайлович");
 
-        Resume resume3 = new Resume("resume2", "Армен", testMapContact2, testMapSection2);
-        Resume resume4 = new Resume("resume23", "v", testMapContact2, testMapSection2);
+
+        Resume resume3 = new Resume("Армен");
+        Resume resume4 = new Resume("Сергей Кирч");
 
         arrayStorage.save(resume);
         arrayStorage.save(resume1);

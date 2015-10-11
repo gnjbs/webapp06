@@ -15,7 +15,6 @@ public class ArrayStorage implements IStore {
 
     @Override
     public void clear() {
-        System.err.println("Лист очищен...");
         Arrays.fill(array, null);
         size = 0;
     }

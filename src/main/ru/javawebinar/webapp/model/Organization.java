@@ -1,5 +1,6 @@
 package main.ru.javawebinar.webapp.model;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -9,6 +10,11 @@ import java.util.List;
 public class Organization {
     private final Link homePage;
     private final List<Position> positions;
+
+
+    public Organization(String name, String url, Position... positions) {
+        this(new Link(name, url), Arrays.asList(positions));
+    }
 
     public Organization(Link homePage, List<Position> positions) {
         this.homePage = homePage;
