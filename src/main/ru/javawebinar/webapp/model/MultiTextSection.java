@@ -11,6 +11,10 @@ import java.util.List;
 public class MultiTextSection extends Section {
     private final List<String> lines;
 
+    public MultiTextSection(String... lines) {
+        this(Arrays.asList(lines));
+    }
+
     public MultiTextSection(List<String> lines) {
         this.lines = lines;
     }

@@ -31,8 +31,15 @@ public class Resume implements Comparable<Resume> {
     public Map<SectionType, Section> getSections() {
         return sections;
     }
-//
 
+    public void addContact(ContactType contactType, String value) {
+        contacts.put(contactType, value);
+
+    }
+
+    public void addSection(SectionType sectionType, Section section) {
+        sections.put(sectionType, section);
+    }
 
     public String getUuid() {
         return uuid;
