@@ -39,7 +39,7 @@ public class Main {
         Resume resume2 = new Resume("Анатолий Михайлович");
 
 
-        Resume resume3 = new Resume("Армен");
+        Resume resume3 = new Resume("resume2","Армен");
         Resume resume4 = new Resume("Сергей Кирч");
 
         arrayStorage.save(resume);

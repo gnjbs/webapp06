@@ -69,6 +69,7 @@ public class Resume implements Comparable<Resume> {
     @Override
     public int hashCode() {
         int result = uuid.hashCode();
+        result = 31 * result + fullName.hashCode();
         result = 31 * result + contacts.hashCode();
         result = 31 * result + sections.hashCode();
         return result;

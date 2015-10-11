@@ -4,6 +4,8 @@ import main.ru.javawebinar.webapp.model.Resume;
 
 import java.util.*;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * GKislin
  * 02.10.2015.
@@ -21,6 +23,7 @@ public class ArrayStorage implements IStore {
 
     @Override
     public void save(Resume r) {
+        requireNonNull(r);
         int index = getIndexByUuid(r.getUuid());
         if (index == -1) {
             array[size] = r;
@@ -32,6 +35,7 @@ public class ArrayStorage implements IStore {
 
     @Override
     public void update(Resume r) {
+        requireNonNull(r);
         int index = getIndexByUuid(r.getUuid());
         if (index == -1) {
             throw new NoSuchElementException();
@@ -42,17 +46,13 @@ public class ArrayStorage implements IStore {
 
     @Override
     public Resume load(String uuid) {
-        int index = getIndexByUuid(uuid);
-        if (index >= 0) {
-            return array[index];
-        } else {
-            return null;
-        }
+        requireNonNull(uuid);
+        return array[getIndexByUuid(uuid)];
     }
 
     @Override
     public void delete(String uuid) {
-
+        requireNonNull(uuid);
         int index = getIndexByUuid(uuid);
         if (index >= 0 && index < array.length) {
             System.arraycopy(array, index + 1, array, index, size);
@@ -65,11 +65,11 @@ public class ArrayStorage implements IStore {
 
     @Override
     public Collection<Resume> getAllSorted() {
-        if (array != null) {
-            Resume[] copy = Arrays.copyOf(array, size);
-            Arrays.sort(copy, 0, size);
-            return Arrays.asList(copy);
-        } else return null;
+        requireNonNull(array);
+        Resume[] copy = Arrays.copyOf(array, size);
+        Arrays.sort(copy, 0, size);
+        return Arrays.asList(copy);
+
     }
 
     @Override
