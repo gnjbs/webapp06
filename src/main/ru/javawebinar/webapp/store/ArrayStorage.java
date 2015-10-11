@@ -12,13 +12,13 @@ import static java.util.Objects.requireNonNull;
  */
 public class ArrayStorage implements IStore {
     private static final int MAX_LENGTH = 10000;
-    private static int size = 0;
+    private static int currentSize = 0;
     private Resume[] array = new Resume[MAX_LENGTH];
 
     @Override
     public void clear() {
         Arrays.fill(array, null);
-        size = 0;
+        currentSize = 0;
     }
 
     @Override
@@ -26,8 +26,8 @@ public class ArrayStorage implements IStore {
         requireNonNull(r);
         int index = getIndexByUuid(r.getUuid());
         if (index == -1) {
-            array[size] = r;
-            size++;
+            array[currentSize++] = r;
+            System.out.println("Сохранил");
         } else {
             System.err.println("Невозможно сохранить");
         }
@@ -55,8 +55,8 @@ public class ArrayStorage implements IStore {
         requireNonNull(uuid);
         int index = getIndexByUuid(uuid);
         if (index >= 0 && index < array.length) {
-            System.arraycopy(array, index + 1, array, index, size);
-            size--;
+            System.arraycopy(array, index + 1, array, index, currentSize);
+            currentSize--;
         } else {
             throw new NoSuchElementException();
         }
@@ -66,20 +66,20 @@ public class ArrayStorage implements IStore {
     @Override
     public Collection<Resume> getAllSorted() {
         requireNonNull(array);
-        Resume[] copy = Arrays.copyOf(array, size);
-        Arrays.sort(copy, 0, size);
+        Resume[] copy = Arrays.copyOf(array, currentSize);
+        Arrays.sort(copy, 0, currentSize);
         return Arrays.asList(copy);
 
     }
 
     @Override
     public int size() {
-        return size;
+        return currentSize;
     }
 
     private int getIndexByUuid(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (uuid.equals(array[i].getUuid())) {
+        for (int i = 0; i < currentSize; i++) {
+            if (array[i].getUuid().equals(uuid)) {
                 return i;
             }
         }
