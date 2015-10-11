@@ -39,7 +39,7 @@ public class Main {
         Resume resume2 = new Resume("Анатолий Михайлович");
 
 
-        Resume resume3 = new Resume("resume2","Армен");
+        Resume resume3 = new Resume("resume2", "Армен");
         Resume resume4 = new Resume("Сергей Кирч");
 
         arrayStorage.save(resume);
@@ -50,7 +50,7 @@ public class Main {
 
         System.out.println("Размер массива = " + arrayStorage.size());
 
-        System.out.println("load резюме с UUID = resume2 = " + arrayStorage.load("resume2").toString());
+        System.out.println("load резюме с UUID = resume2 = " + arrayStorage.load("resume2"));
 
         System.out.println("Текущий размер списка" + arrayStorage.size() + " Весь список \n" + arrayStorage.getAllSorted());
 
@@ -58,7 +58,7 @@ public class Main {
 
 
         System.out.println("Весь список после обновления \n" + arrayStorage.getAllSorted());
-        arrayStorage.delete("resume23");
+        arrayStorage.delete("resume2");
         System.out.println("Размер списка после удаления элемента равен " + arrayStorage.size()
                 + " Весь список после удаления \n" + arrayStorage.getAllSorted());
         arrayStorage.clear();
