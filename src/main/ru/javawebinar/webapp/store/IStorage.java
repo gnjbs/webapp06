@@ -8,7 +8,7 @@ import java.util.Collection;
  * GKislin
  * 02.10.2015.
  */
-public interface IStore {
+public interface IStorage {
     void clear();
 
     void save(Resume r);
