@@ -17,8 +17,9 @@ public class ArrayStorage implements IStore {
 
     @Override
     public void clear() {
-        Arrays.fill(array, null);
         currentSize = 0;
+        Arrays.fill(array, null);
+
     }
 
     @Override

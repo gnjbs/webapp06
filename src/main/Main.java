@@ -2,6 +2,7 @@ package main;
 
 import main.ru.javawebinar.webapp.model.*;
 import main.ru.javawebinar.webapp.store.ArrayStorage;
+import main.ru.javawebinar.webapp.store.IStore;
 
 
 import java.util.HashMap;
@@ -13,7 +14,7 @@ import java.util.Map;
  */
 public class Main {
     public static void main(String[] args) {
-        ArrayStorage arrayStorage = new ArrayStorage();
+        IStore arrayStorage = new ArrayStorage();
         Map<ContactType, String> testMapContact = new HashMap<>();
         testMapContact.put(ContactType.HOME_PHONE, "525757");
         testMapContact.put(ContactType.MAIL, "at@ya.ru");
@@ -40,21 +41,21 @@ public class Main {
 
 
         Resume resume3 = new Resume("resume2", "Армен");
-        Resume resume4 = new Resume("Сергей Кирч");
+        Resume resume4 = new Resume("resume2","Сергей Кирч");
 
         arrayStorage.save(resume);
         arrayStorage.save(resume1);
         arrayStorage.save(resume2);
-        arrayStorage.save(resume4);
-        arrayStorage.save(resume);
-
+        arrayStorage.save(resume3);
+        System.out.println(arrayStorage.size());
+        System.out.println(arrayStorage.load("resume2"));
         System.out.println("Размер массива = " + arrayStorage.size());
 
         System.out.println("load резюме с UUID = resume2 = " + arrayStorage.load("resume2"));
 
         System.out.println("Текущий размер списка" + arrayStorage.size() + " Весь список \n" + arrayStorage.getAllSorted());
 
-        arrayStorage.update(resume3);
+        arrayStorage.update(resume4);
 
 
         System.out.println("Весь список после обновления \n" + arrayStorage.getAllSorted());

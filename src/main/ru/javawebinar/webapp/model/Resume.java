@@ -34,7 +34,6 @@ public class Resume implements Comparable<Resume> {
 
     public void addContact(ContactType contactType, String value) {
         contacts.put(contactType, value);
-
     }
 
     public void addSection(SectionType sectionType, Section section) {
@@ -47,21 +46,14 @@ public class Resume implements Comparable<Resume> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Resume resume = (Resume) o;
 
-        if (!uuid.equals(resume.uuid)) {
-            return false;
-        }
-        if (!contacts.equals(resume.contacts)) {
-            return false;
-        }
+        if (!uuid.equals(resume.uuid)) return false;
+        if (!fullName.equals(resume.fullName)) return false;
+        if (!contacts.equals(resume.contacts)) return false;
         return sections.equals(resume.sections);
 
     }
