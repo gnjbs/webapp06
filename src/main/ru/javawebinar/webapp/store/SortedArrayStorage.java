@@ -2,6 +2,7 @@ package main.ru.javawebinar.webapp.store;
 
 import main.ru.javawebinar.webapp.model.Resume;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -9,6 +10,11 @@ import java.util.Collection;
  */
 public class SortedArrayStorage extends AbstractArrayStorage {
     //Здесь двоичный поиск по отсортированному.
+
+    private final Resume[] array = new Resume[MAX_LENGTH];
+    private final String[] sortedUuids = new String[MAX_LENGTH];
+    private int currentSize = 0;
+
     @Override
     public void clear() {
 
@@ -42,5 +48,9 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     @Override
     public int size() {
         return 0;
+    }
+
+    private int getIndex(String uuid) {
+        return Arrays.binarySearch(sortedUuids, 0, currentSize, uuid);
     }
 }
