@@ -37,7 +37,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     @Override
     public void update(Resume r) {
         requireNonNull(r);
-        int existIndex = getExistIndex(r.getUuid());
+        int existIndex = getExistedIndex(r.getUuid());
         array[existIndex] = r;
     }
 
@@ -51,7 +51,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     @Override
     public void delete(String uuid) {
         requireNonNull(uuid);
-        int existIndex = getExistIndex(uuid);
+        int existIndex = getExistedIndex(uuid);
         array[existIndex] = array[--currentSize];
         array[currentSize] = null;
     }
