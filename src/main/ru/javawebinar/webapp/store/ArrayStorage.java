@@ -69,15 +69,9 @@ public class ArrayStorage extends AbstractArrayStorage {
         return currentSize;
     }
 
-    private int getExistIndex(String uuid) {
-        int index = getIndexByUuid(uuid);
-        if (index == -1) {
-            throw new IllegalArgumentException("This uuid (" + uuid + ")is not exist");
-        }
-        return index;
-    }
 
-    private int getIndexByUuid(String uuid) {
+    @Override
+    protected int getIndexByUuid(String uuid) {
         for (int i = 0; i < currentSize; i++) {
             if (array[i].getUuid().equals(uuid)) {
                 return i;

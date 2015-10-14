@@ -50,7 +50,8 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         return 0;
     }
 
-    private int getIndex(String uuid) {
+    @Override
+    protected int getIndexByUuid(String uuid) {
         return Arrays.binarySearch(sortedUuids, 0, currentSize, uuid);
     }
 }
