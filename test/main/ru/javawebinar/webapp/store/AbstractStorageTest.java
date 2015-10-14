@@ -1,5 +1,9 @@
 package main.ru.javawebinar.webapp.store;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -7,13 +11,18 @@ import static org.junit.Assert.*;
  */
 public class AbstractStorageTest {
 
-    @org.junit.Before
+    @Before
     public void setUp() throws Exception {
 
     }
 
-    @org.junit.After
+    @After
     public void tearDown() throws Exception {
+
+    }
+
+    @Test
+    public void testLoad() throws Exception {
 
     }
 }
