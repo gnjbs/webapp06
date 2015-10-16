@@ -17,7 +17,7 @@ public class AbstractStorageTest {
     private IStorage store = new SortedArrayStorage();
 
     {
-        R1 = new Resume("Полное Имя1");
+        R1 = new Resume("Артур","Полное Имя1");
         R1.addContact(ContactType.MAIL, "mail1@ya.ru");
         R1.addContact(ContactType.PHONE, "11111");
         R2 = new Resume("Полное Имя2");
@@ -42,16 +42,40 @@ public class AbstractStorageTest {
 
     @Before
     public void setUp() throws Exception {
-
+        store.clear();
+        store.save(R1);
+        store.save(R2);
+        store.save(R3);
     }
 
     @After
     public void tearDown() throws Exception {
-
+        store.clear();
     }
 
     @Test
     public void testLoad() throws Exception {
+        assertTrue(store.size() == 3);
+        getResume(R1);
+        getResume(R2);
+        getResume(R3);
 
+    }
+    public void getResume(Resume r)
+    {
+        assertTrue(store.load(r.getUuid()).equals(r));
+    }
+
+    @Test
+    public void testDelete(){
+       store.delete(R1.getUuid());
+    }
+
+    @Test
+    public void testUpdate(){
+        Resume R4 = new Resume(R1.getUuid(),"Пfdsfadsолное Имя1");
+        R4.addContact(ContactType.MAIL, "mail1@ya.fadsfru");
+        R4.addContact(ContactType.PHONE, "11111");
+        store.update(R4);
     }
 }
