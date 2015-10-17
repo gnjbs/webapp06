@@ -1,5 +1,12 @@
+import ru.javawebinar.webapp.model.Resume;
+import ru.javawebinar.webapp.storage.ListStorage;
+import ru.javawebinar.webapp.storage.MapStorage;
+
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * User: gkislin
@@ -7,30 +14,15 @@ import java.util.Arrays;
  */
 public class Main {
     public static void main(String[] args) {
-        String value = "value";
-        System.out.println(value.charAt(3));
-        byte[] bytes = value.getBytes();
-        System.out.println(Charset.defaultCharset().name());
-        char[] chars = value.toCharArray();
-        System.out.println(Arrays.toString(bytes));
-        String a = "abc";
-        String b = ("ab" + new String("c")).intern();
-        System.out.println(a == b);
-        System.out.println(a.equals(b));
-        Integer integer1 = Integer.valueOf(200);
-        Integer integer2 = Integer.valueOf(200);
-        System.out.println(integer1 == integer2);
-        System.out.println(integer1.equals(integer2));
 
-        String str = "";
-        for (int i = 0; i < 10; i++) {
-            str += i;
-        }
-
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 10; i++) {
-            sb.append(i);
-        }
-        System.out.println(sb.toString());
+        MapStorage map = new MapStorage();
+        ListStorage list = new ListStorage();
+        map.save(new Resume("1", "Сергей Иванович"));
+        map.save(new Resume("Андре Иванович"));
+        map.save(new Resume("Валдис Иванович"));
+        list.save(new Resume(""));
+        //map.delete("1");
+        List<Resume> list2 = (List<Resume>) map.getAllSorted();
+        System.out.println(list);
     }
 }
