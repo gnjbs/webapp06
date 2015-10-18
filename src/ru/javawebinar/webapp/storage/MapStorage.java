@@ -6,7 +6,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-
 /**
  * GKislin
  * 16.10.2015.
@@ -17,13 +16,14 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected boolean exist(String uuid) {
-        return false;
+        return map.containsKey(uuid);
     }
 
     @Override
     protected void doClear() {
         map.clear();
     }
+
 
     @Override
     protected void doSave(Resume r) {
@@ -47,7 +47,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected List<Resume> doGetAll() {
-        return map.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList());
+        return new ArrayList<>(map.values());
     }
 
     @Override

@@ -1,12 +1,8 @@
 package ru.javawebinar.webapp.storage;
 
-import ru.javawebinar.webapp.exceptions.WebAppException;
 import ru.javawebinar.webapp.model.Resume;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 /**
  * Created by ArturDS on 17.10.2015.
@@ -14,12 +10,11 @@ import java.util.ListIterator;
 public class ListStorage extends AbstractStorage {
 
     private final List<Resume> list = new ArrayList<>();
-    private ListIterator<Resume> listIterator = list.listIterator();
 
     @Override
     protected boolean exist(String uuid) {
 
-        return false;
+        return getIndex(uuid) >= 0;
     }
 
     @Override
@@ -34,30 +29,17 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void doUpdate(Resume r) {
-        //TODO Через итератор реализовать обновление
-        while (listIterator.hasNext()) {
-
-        }
-
+        list.set(getIndex(r.getUuid()), r);
     }
 
     @Override
     protected Resume doLoad(String uuid) {
-        for (Resume resume : list) {
-            if (uuid.equals(resume.getUuid())) {
-                return resume;
-            }
-        }
-        return null;
+        return list.get(getIndex(uuid));
     }
 
     @Override
     protected void doDelete(String uuid) {
-        while (listIterator.hasNext()) {
-            if (uuid.equals(listIterator)) {
-                listIterator.remove();
-            }
-        }
+        list.remove(getIndex(uuid));
     }
 
     @Override
@@ -69,4 +51,14 @@ public class ListStorage extends AbstractStorage {
     public int size() {
         return list.size();
     }
+
+    private int getIndex(String uuid) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getUuid().equals(uuid)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
 }
