@@ -1,6 +1,7 @@
 package ru.javawebinar.webapp.storage;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import ru.javawebinar.webapp.exceptions.WebAppException;
 import ru.javawebinar.webapp.model.*;
@@ -56,6 +57,8 @@ public abstract class AbstractStorageTest {
         storage.save(R3);
     }
 
+    @Rule
+    Exception exception = new Exception()
     private void assertGet(Resume r) {
         assertTrue(storage.load(r.getUuid()).equals(r));
     }
