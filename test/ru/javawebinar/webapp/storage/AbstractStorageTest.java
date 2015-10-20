@@ -58,7 +58,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Rule
-    Exception exception = new Exception()
+    Exception exception = new Exception().
     private void assertGet(Resume r) {
         assertTrue(storage.load(r.getUuid()).equals(r));
     }
