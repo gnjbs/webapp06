@@ -1,8 +1,10 @@
 package ru.javawebinar.webapp.storage;
 
+import org.hamcrest.Description;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.internal.matchers.TypeSafeMatcher;
 import org.junit.rules.ExpectedException;
 import ru.javawebinar.webapp.exceptions.WebAppException;
 import ru.javawebinar.webapp.model.*;
@@ -59,7 +61,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Rule
-    ExpectedException exception = ExpectedException.none();
+    public ExpectedException exception = ExpectedException.none();
 
     private void assertGet(Resume r) {
         assertTrue(storage.load(r.getUuid()).equals(r));
@@ -68,6 +70,8 @@ public abstract class AbstractStorageTest {
     private void assertSize(int size) {
         assertEquals(size, storage.size());
     }
+
+
 
     @Test
     public void testClear() throws Exception {
@@ -131,5 +135,13 @@ public abstract class AbstractStorageTest {
             return;
         }
         fail();
+    }
+
+    @Test
+    public void typeOfExceptionVerify()  {
+        exception.expect(WebAppException.class);
+        exception.expect(new CustomMatcher(WebAppException.class, "Illegal state"));
+        throw new RuntimeException("Runtime exception occurred",
+                new IllegalStateException("Illegal state"));
     }
 }
