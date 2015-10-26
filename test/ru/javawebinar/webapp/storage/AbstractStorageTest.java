@@ -139,7 +139,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void typeOfExceptionVerify()  {
-        exception.expect(WebAppException.class);
+      //  exception.expect(WebAppException.class);
         exception.expect(new CustomMatcher(WebAppException.class, "Illegal state"));
         throw new RuntimeException("Runtime exception occurred",
                 new IllegalStateException("Illegal state"));
