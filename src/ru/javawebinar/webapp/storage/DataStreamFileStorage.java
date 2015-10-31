@@ -148,7 +148,7 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                         case "MultiTextSection":
                             int numberOfMultiTextSection = dis.readInt();
                             r.addSection(SectionType.valueOf(sectionType),
-                                    //TODO здесь реализовать цикл?
+                                    //TODO как здесь реализовать цикл?
                                     new MultiTextSection(dis.readUTF()));
                             break;
                         case "OrganizationSection":
