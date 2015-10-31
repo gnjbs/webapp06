@@ -85,7 +85,7 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                     if ((MultiTextSection.class) == (entry.getValue().getClass())) {
                         List<String> lines = ((MultiTextSection) entry.getValue()).getLines();
                         if (lines.size() > 0) {
-                            dos.writeUTF(String.valueOf(lines.size()));
+                            dos.writeInt(lines.size());
                             for (String line : lines) {
                                 dos.writeUTF(line);
                             }
@@ -95,7 +95,7 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                         List<Organization> organizations = ((OrganizationSection) entry.getValue()).getOrganizations();
                         if (organizations.size() > 0) {
                             for (Organization organization : organizations) {
-                                dos.writeUTF(String.valueOf(organizations.size()));
+                                dos.writeInt(organizations.size());
                                 dos.writeUTF((organization.getHomePage().getName() == null)
                                         ? zero : organization.getHomePage().getName());
                                 dos.writeUTF((organization.getHomePage().getUrl() == null)
@@ -103,7 +103,7 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                                 List<Organization.Position> positions = organization.getPositions();
                                 if (positions.size() > 0) {
                                     for (Organization.Position position : positions) {
-                                        dos.writeUTF(String.valueOf(positions.size()));
+                                        dos.writeInt(positions.size());
                                         dos.writeUTF(position.getStartDate() == null ? zero : position.getStartDate().toString());
                                         dos.writeUTF(position.getEndDate() == null ? zero : position.getEndDate().toString());
                                         dos.writeUTF(position.getTitle() == null ? zero : position.getTitle());
@@ -147,9 +147,12 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                             break;
                         case "MultiTextSection":
                             int numberOfMultiTextSection = dis.readInt();
-                            r.addSection(SectionType.valueOf(sectionType),
-                                    //TODO как здесь реализовать цикл?
-                                    new MultiTextSection(dis.readUTF()));
+                            List<String> mtsList = new ArrayList<>();
+                            for (int j = 0; j < numberOfMultiTextSection; j++) {;
+                                mtsList.add(dis.readUTF());
+
+                            }
+                            r.addSection(SectionType.valueOf(sectionType), new MultiTextSection(mtsList));
                             break;
                         case "OrganizationSection":
 
