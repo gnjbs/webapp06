@@ -31,6 +31,7 @@ public class MainFiles {
                 System.out.println(it.next());
             }
 
+
             System.out.println("\nBy stream lambda\n");
             Files.lines(Paths.get(LOG_FILE), StandardCharsets.UTF_8).forEach(System.out::println);
         } catch (IOException e) {

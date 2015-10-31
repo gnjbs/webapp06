@@ -65,7 +65,7 @@ public abstract class AbstractStorageTest {
         R2.addContact(ContactType.PHONE, "22222");
         R3 = new Resume("Полное Имя3");
         R1.addSection(SectionType.OBJECTIVE, new TextSection("Objective1"));
-        R1.addSection(SectionType.ACHIEVEMENT, new MultiTextSection("Achivment11", "Achivment12"));
+        R1.addSection(SectionType.ACHIEVEMENT, new MultiTextSection("Achivment11", "Achivment12","One more Section"));
         R1.addSection(SectionType.QUALIFICATIONS, new MultiTextSection("Java", "SQL"));
         R1.addSection(SectionType.EXPERIENCE,
                 new OrganizationSection(

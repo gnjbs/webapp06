@@ -61,6 +61,23 @@ public class Organization {
     public static class Position {
         private final LocalDate startDate;
         private final LocalDate endDate;
+
+        public LocalDate getStartDate() {
+            return startDate;
+        }
+
+        public LocalDate getEndDate() {
+            return endDate;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
         private final String title;
         private final String description;
 
