@@ -98,8 +98,9 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                     if ((OrganizationSection.class) == (entry.getValue().getClass())) {
                         List<Organization> organizations = ((OrganizationSection) entry.getValue()).getOrganizations();
                         if (organizations.size() > 0) {
+                            dos.writeInt(organizations.size());
                             for (Organization organization : organizations) {
-                                dos.writeInt(organizations.size());
+
                                 dos.writeUTF((organization.getHomePage().getName() == null)
                                         ? zero : organization.getHomePage().getName());
                                 dos.writeUTF((organization.getHomePage().getUrl() == null)
