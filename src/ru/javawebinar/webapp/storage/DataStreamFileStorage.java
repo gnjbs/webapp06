@@ -166,19 +166,15 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                             Organization[] organizations = new Organization[numberOfOrganization];
                             Organization.Position[] positions = null;
                             for (int j = 0; j < numberOfOrganization; j++) {
-                                String organizationName = dis.readUTF();
-                                String organizationURL = dis.readUTF();
-                                organizationName = isNull(organizationName);
-                                organizationURL = isNull(organizationURL);
+                                String organizationName = isNull(dis.readUTF());
+                                String organizationURL = isNull(dis.readUTF());
                                 int numberOfPositions = dis.readInt();
                                 positions = new Organization.Position[numberOfPositions];
                                 for (int k = 0; k < numberOfPositions; k++) {
                                     LocalDate startDate = LocalDate.parse(dis.readUTF(), formatter);
                                     LocalDate endDate = LocalDate.parse(dis.readUTF(), formatter);
-                                    String positionTitle = dis.readUTF();
-                                    String positionDescription = dis.readUTF();
-                                    positionTitle = isNull(positionTitle);
-                                    positionDescription = isNull(positionDescription);
+                                    String positionTitle = isNull(dis.readUTF());
+                                    String positionDescription = isNull(dis.readUTF());
                                     positions[k] = new Organization.Position(startDate, endDate, positionTitle, positionDescription);
                                 }
 
