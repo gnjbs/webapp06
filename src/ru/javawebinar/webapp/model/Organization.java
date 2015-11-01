@@ -14,13 +14,13 @@ import static ru.javawebinar.webapp.util.DateUtil.of;
  */
 public class Organization {
     private final Link homePage;
-    private final List<Position> positions;
+    private final List<Organization.Position> positions;
 
-    public Organization(String name, String url, Position... positions) {
+    public Organization(String name, String url, Organization.Position... positions) {
         this(new Link(name, url), Arrays.asList(positions));
     }
 
-    public Organization(Link homePage, List<Position> positions) {
+    public Organization(Link homePage, List<Organization.Position> positions) {
         this.homePage = homePage;
         this.positions = positions;
     }

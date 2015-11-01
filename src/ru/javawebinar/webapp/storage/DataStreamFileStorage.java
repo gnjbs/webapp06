@@ -106,8 +106,8 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                                         ? zero : organization.getHomePage().getUrl());
                                 List<Organization.Position> positions = organization.getPositions();
                                 if (positions.size() > 0) {
+                                    dos.writeInt(positions.size());
                                     for (Organization.Position position : positions) {
-                                        dos.writeInt(positions.size());
                                         dos.writeUTF(position.getStartDate() == null ? zero : position.getStartDate().toString());
                                         dos.writeUTF(position.getEndDate() == null ? zero : position.getEndDate().toString());
                                         dos.writeUTF(position.getTitle() == null ? zero : position.getTitle());
@@ -161,6 +161,8 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                             break;
                         case "OrganizationSection":
                             int numberOfOrganization = dis.readInt();
+                            Organization[] organizations = new Organization[numberOfOrganization];
+                            Organization.Position[] positions = null;
                             for (int j = 0; j < numberOfOrganization; j++) {
                                 String organizationName = dis.readUTF();
                                 String organizationURL = dis.readUTF();
@@ -171,6 +173,7 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                                     organizationURL = null;
                                 }
                                 int numberOfPositions = dis.readInt();
+                                positions = new Organization.Position[numberOfPositions];
                                 for (int k = 0; k < numberOfPositions; k++) {
                                     LocalDate startDate = LocalDate.parse(dis.readUTF(), formatter);
                                     LocalDate endDate = LocalDate.parse(dis.readUTF(), formatter);
@@ -182,11 +185,14 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                                     if (positionDescription.equals(zero)) {
                                         positionDescription = null;
                                     }
-                                    r.addSection(SectionType.valueOf(sectionType), new OrganizationSection
-                                            (new Organization(organizationName, organizationURL,
-                                                    new Organization.Position(startDate, endDate, positionTitle, positionDescription))));
+
+                                    positions[k]= new Organization.Position(startDate, endDate, positionTitle, positionDescription);
                                 }
+
+                                organizations[j] = new Organization(organizationName, organizationURL, positions);
+
                             }
+                            r.addSection(SectionType.valueOf(sectionType), new OrganizationSection(organizations));
                             break;
                     }
                 }
