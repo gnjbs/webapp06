@@ -130,7 +130,8 @@ public class DataStreamFileStorage extends AbstractFileStorage {
     @Override
     protected void doUpdate(Resume r, File file) {
         //TODO или нужно ? сначало load, затем перезапись полей, потом save?
-        doDelete(r.getUuid(), file);
+        doLoad(r.getUuid(), file);
+
         doSave(r, file);
     }
 
@@ -167,12 +168,8 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                             for (int j = 0; j < numberOfOrganization; j++) {
                                 String organizationName = dis.readUTF();
                                 String organizationURL = dis.readUTF();
-                                if (organizationName.equals(zero)) {
-                                    organizationName = null;
-                                }
-                                if (organizationURL.equals(zero)) {
-                                    organizationURL = null;
-                                }
+                                organizationName = isNull(organizationName);
+                                organizationURL = isNull(organizationURL);
                                 int numberOfPositions = dis.readInt();
                                 positions = new Organization.Position[numberOfPositions];
                                 for (int k = 0; k < numberOfPositions; k++) {
@@ -180,14 +177,9 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                                     LocalDate endDate = LocalDate.parse(dis.readUTF(), formatter);
                                     String positionTitle = dis.readUTF();
                                     String positionDescription = dis.readUTF();
-                                    if (positionTitle.equals(zero)) {
-                                        positionTitle = null;
-                                    }
-                                    if (positionDescription.equals(zero)) {
-                                        positionDescription = null;
-                                    }
-
-                                    positions[k]= new Organization.Position(startDate, endDate, positionTitle, positionDescription);
+                                    positionTitle = isNull(positionTitle);
+                                    positionDescription = isNull(positionDescription);
+                                    positions[k] = new Organization.Position(startDate, endDate, positionTitle, positionDescription);
                                 }
 
                                 organizations[j] = new Organization(organizationName, organizationURL, positions);
@@ -228,4 +220,11 @@ public class DataStreamFileStorage extends AbstractFileStorage {
         return files.length;
     }
 
+    public String isNull(String something) {
+        if (something.equals(zero)) {
+            something = null;
+
+        }
+        return something;
+    }
 }
