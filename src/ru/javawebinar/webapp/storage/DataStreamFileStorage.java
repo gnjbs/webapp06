@@ -5,7 +5,10 @@ import ru.javawebinar.webapp.exceptions.WebAppException;
 import ru.javawebinar.webapp.model.*;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +20,7 @@ public class DataStreamFileStorage extends AbstractFileStorage {
 
     protected final File directory;
     protected final String zero = "$%$";
+    protected final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public DataStreamFileStorage(String path) {
         directory = new File(path);
@@ -124,7 +128,9 @@ public class DataStreamFileStorage extends AbstractFileStorage {
 
     @Override
     protected void doUpdate(Resume r, File file) {
-
+        //TODO или нужно ? сначало load, затем перезапись полей, потом save?
+        doDelete(r.getUuid(), file);
+        doSave(r, file);
     }
 
     @Override
@@ -148,14 +154,39 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                         case "MultiTextSection":
                             int numberOfMultiTextSection = dis.readInt();
                             List<String> mtsList = new ArrayList<>();
-                            for (int j = 0; j < numberOfMultiTextSection; j++) {;
+                            for (int j = 0; j < numberOfMultiTextSection; j++) {
                                 mtsList.add(dis.readUTF());
-
                             }
                             r.addSection(SectionType.valueOf(sectionType), new MultiTextSection(mtsList));
                             break;
                         case "OrganizationSection":
-
+                            int numberOfOrganization = dis.readInt();
+                            for (int j = 0; j < numberOfOrganization; j++) {
+                                String organizationName = dis.readUTF();
+                                String organizationURL = dis.readUTF();
+                                if (organizationName.equals(zero)) {
+                                    organizationName = null;
+                                }
+                                if (organizationURL.equals(zero)) {
+                                    organizationURL = null;
+                                }
+                                int numberOfPositions = dis.readInt();
+                                for (int k = 0; k < numberOfPositions; k++) {
+                                    LocalDate startDate = LocalDate.parse(dis.readUTF(), formatter);
+                                    LocalDate endDate = LocalDate.parse(dis.readUTF(), formatter);
+                                    String positionTitle = dis.readUTF();
+                                    String positionDescription = dis.readUTF();
+                                    if (positionTitle.equals(zero)) {
+                                        positionTitle = null;
+                                    }
+                                    if (positionDescription.equals(zero)) {
+                                        positionDescription = null;
+                                    }
+                                    r.addSection(SectionType.valueOf(sectionType), new OrganizationSection
+                                            (new Organization(organizationName, organizationURL,
+                                                    new Organization.Position(startDate, endDate, positionTitle, positionDescription))));
+                                }
+                            }
                             break;
                     }
                 }
@@ -176,12 +207,18 @@ public class DataStreamFileStorage extends AbstractFileStorage {
 
     @Override
     protected List<Resume> doGetAll() {
-        return null;
+        List<Resume> list = new ArrayList<>();
+        File[] files = directory.listFiles();
+        for (int i = 0; i < files.length; i++) {
+            list.add(doLoad(files[i].getName(), files[i]));
+        }
+        return list;
     }
 
     @Override
     public int size() {
-        return 0;
+        File[] files = directory.listFiles();
+        return files.length;
     }
 
 }
