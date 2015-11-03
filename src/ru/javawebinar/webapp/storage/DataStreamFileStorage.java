@@ -67,8 +67,7 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                 for (Map.Entry<SectionType, Section> entry : r.getSections().entrySet()) {
                     dos.writeUTF(entry.getKey().name());
                     dos.writeUTF(entry.getValue().getClass().getSimpleName());
-
-                    switch (entry.getValue().getClass().getSimpleName().toString()) {
+                    switch (entry.getValue().getClass().getSimpleName()) {
                         case "TextSection":
                             dos.writeUTF(((TextSection) entry.getValue()).getContent());
                             break;
@@ -219,9 +218,5 @@ public class DataStreamFileStorage extends AbstractFileStorage {
 
         }
         return something;
-    }
-
-    public DataOutputStream checkExceptionType() {
-        return null;
     }
 }
