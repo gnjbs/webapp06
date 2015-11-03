@@ -8,7 +8,6 @@ import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -64,48 +63,34 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                 }
                 //Write Sections
                 dos.writeInt(r.getSections().size());
+
                 for (Map.Entry<SectionType, Section> entry : r.getSections().entrySet()) {
-                    switch (entry.getKey()) {
-                        case OBJECTIVE:
-                            dos.writeUTF("OBJECTIVE");
-                            break;
-                        case ACHIEVEMENT:
-                            dos.writeUTF("ACHIEVEMENT");
-                            break;
-                        case QUALIFICATIONS:
-                            dos.writeUTF("QUALIFICATIONS");
-                            break;
-                        case EXPERIENCE:
-                            dos.writeUTF("EXPERIENCE");
-                            break;
-                        case EDUCATION:
-                            dos.writeUTF("EDUCATION");
-                            break;
-                    }
+                    dos.writeUTF(entry.getKey().name());
                     dos.writeUTF(entry.getValue().getClass().getSimpleName());
-                    if ((TextSection.class) == (entry.getValue().getClass())) {
-                        dos.writeUTF(((TextSection) entry.getValue()).getContent());
-                    }
-                    if ((MultiTextSection.class) == (entry.getValue().getClass())) {
-                        List<String> lines = ((MultiTextSection) entry.getValue()).getLines();
-                        if (lines.size() > 0) {
-                            dos.writeInt(lines.size());
-                            for (String line : lines) {
-                                dos.writeUTF(line);
+
+                    switch (entry.getValue().getClass().getSimpleName().toString()) {
+                        case "TextSection":
+                            dos.writeUTF(((TextSection) entry.getValue()).getContent());
+                            break;
+                        case "MultiTextSection":
+                            List<String> lines = ((MultiTextSection) entry.getValue()).getLines();
+                            if (lines.size() > 0) {
+                                dos.writeInt(lines.size());
+                                for (String line : lines) {
+                                    dos.writeUTF(line);
+                                }
                             }
-                        }
-                    }
-                    if ((OrganizationSection.class) == (entry.getValue().getClass())) {
-                        List<Organization> organizations = ((OrganizationSection) entry.getValue()).getOrganizations();
-                        if (organizations.size() > 0) {
-                            dos.writeInt(organizations.size());
-                            for (Organization organization : organizations) {
-                                dos.writeUTF((organization.getHomePage().getName() == null)
-                                        ? zero : organization.getHomePage().getName());
-                                dos.writeUTF((organization.getHomePage().getUrl() == null)
-                                        ? zero : organization.getHomePage().getUrl());
-                                List<Organization.Position> positions = organization.getPositions();
-                                if (positions.size() > 0) {
+                            break;
+                        case "OrganizationSection":
+                            List<Organization> organizations = ((OrganizationSection) entry.getValue()).getOrganizations();
+                            if (organizations.size() > 0) {
+                                dos.writeInt(organizations.size());
+                                for (Organization organization : organizations) {
+                                    dos.writeUTF((organization.getHomePage().getName() == null)
+                                            ? zero : organization.getHomePage().getName());
+                                    dos.writeUTF((organization.getHomePage().getUrl() == null)
+                                            ? zero : organization.getHomePage().getUrl());
+                                    List<Organization.Position> positions = organization.getPositions();
                                     dos.writeInt(positions.size());
                                     for (Organization.Position position : positions) {
                                         dos.writeUTF(position.getStartDate() == null ? zero : position.getStartDate().toString());
@@ -113,11 +98,9 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                                         dos.writeUTF(position.getTitle() == null ? zero : position.getTitle());
                                         dos.writeUTF(position.getDescription() == null ? zero : position.getDescription());
                                     }
-                                } else if (positions.size() <= 0) {
-                                    dos.writeInt(0);
                                 }
                             }
-                        }
+                            break;
                     }
                 }
 
@@ -133,7 +116,9 @@ public class DataStreamFileStorage extends AbstractFileStorage {
         //TODO или нужно ? сначало load, затем перезапись полей, потом save?
         Resume loadResume = doLoad(r.getUuid(), file);
         if (loadResume.equals(r)) {
-            return;
+        } else {
+            doDelete(r.getUuid(), file);
+            doSave(r, file);
         }
 
 
@@ -175,7 +160,6 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                                 int numberOfPositions = dis.readInt();
                                 if (numberOfPositions > 0) {
                                     positions = new Organization.Position[numberOfPositions];
-
                                     for (int k = 0; k < numberOfPositions; k++) {
                                         LocalDate startDate = LocalDate.parse(dis.readUTF(), formatter);
                                         LocalDate endDate = LocalDate.parse(dis.readUTF(), formatter);
@@ -183,10 +167,15 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                                         String positionDescription = isNull(dis.readUTF());
                                         positions[k] = new Organization.Position(startDate, endDate, positionTitle, positionDescription);
                                     }
-                                } else if (numberOfPositions <= 0) {
-                                    break;
+                                } else if (numberOfPositions == 0) {
+                                    positions = null;
                                 }
-                                organizations[j] = new Organization(organizationName, organizationURL, positions);
+
+                                if (positions == null) {
+                                    organizations[j] = new Organization(organizationName, organizationURL);
+                                } else {
+                                    organizations[j] = new Organization(organizationName, organizationURL, positions);
+                                }
 
                             }
                             r.addSection(SectionType.valueOf(sectionType), new OrganizationSection(organizations));
@@ -230,5 +219,9 @@ public class DataStreamFileStorage extends AbstractFileStorage {
 
         }
         return something;
+    }
+
+    public DataOutputStream checkExceptionType() {
+        return null;
     }
 }
