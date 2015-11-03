@@ -100,7 +100,6 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                         if (organizations.size() > 0) {
                             dos.writeInt(organizations.size());
                             for (Organization organization : organizations) {
-
                                 dos.writeUTF((organization.getHomePage().getName() == null)
                                         ? zero : organization.getHomePage().getName());
                                 dos.writeUTF((organization.getHomePage().getUrl() == null)
@@ -114,6 +113,8 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                                         dos.writeUTF(position.getTitle() == null ? zero : position.getTitle());
                                         dos.writeUTF(position.getDescription() == null ? zero : position.getDescription());
                                     }
+                                } else if (positions.size() <= 0) {
+                                    dos.writeInt(0);
                                 }
                             }
                         }
@@ -130,9 +131,12 @@ public class DataStreamFileStorage extends AbstractFileStorage {
     @Override
     protected void doUpdate(Resume r, File file) {
         //TODO или нужно ? сначало load, затем перезапись полей, потом save?
-        doLoad(r.getUuid(), file);
+        Resume loadResume = doLoad(r.getUuid(), file);
+        if (loadResume.equals(r)) {
+            return;
+        }
 
-        doSave(r, file);
+
     }
 
     @Override
@@ -169,15 +173,19 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                                 String organizationName = isNull(dis.readUTF());
                                 String organizationURL = isNull(dis.readUTF());
                                 int numberOfPositions = dis.readInt();
-                                positions = new Organization.Position[numberOfPositions];
-                                for (int k = 0; k < numberOfPositions; k++) {
-                                    LocalDate startDate = LocalDate.parse(dis.readUTF(), formatter);
-                                    LocalDate endDate = LocalDate.parse(dis.readUTF(), formatter);
-                                    String positionTitle = isNull(dis.readUTF());
-                                    String positionDescription = isNull(dis.readUTF());
-                                    positions[k] = new Organization.Position(startDate, endDate, positionTitle, positionDescription);
-                                }
+                                if (numberOfPositions > 0) {
+                                    positions = new Organization.Position[numberOfPositions];
 
+                                    for (int k = 0; k < numberOfPositions; k++) {
+                                        LocalDate startDate = LocalDate.parse(dis.readUTF(), formatter);
+                                        LocalDate endDate = LocalDate.parse(dis.readUTF(), formatter);
+                                        String positionTitle = isNull(dis.readUTF());
+                                        String positionDescription = isNull(dis.readUTF());
+                                        positions[k] = new Organization.Position(startDate, endDate, positionTitle, positionDescription);
+                                    }
+                                } else if (numberOfPositions <= 0) {
+                                    break;
+                                }
                                 organizations[j] = new Organization(organizationName, organizationURL, positions);
 
                             }
