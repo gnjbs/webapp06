@@ -73,8 +73,8 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                             break;
                         case "MultiTextSection":
                             List<String> lines = ((MultiTextSection) entry.getValue()).getLines();
+                            dos.writeInt(lines.size());
                             if (lines.size() > 0) {
-                                dos.writeInt(lines.size());
                                 for (String line : lines) {
                                     dos.writeUTF(line);
                                 }
@@ -144,8 +144,10 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                         case "MultiTextSection":
                             int numberOfMultiTextSection = dis.readInt();
                             List<String> mtsList = new ArrayList<>();
-                            for (int j = 0; j < numberOfMultiTextSection; j++) {
-                                mtsList.add(dis.readUTF());
+                            if (numberOfMultiTextSection > 0) {
+                                for (int j = 0; j < numberOfMultiTextSection; j++) {
+                                    mtsList.add(dis.readUTF());
+                                }
                             }
                             r.addSection(SectionType.valueOf(sectionType), new MultiTextSection(mtsList));
                             break;
@@ -175,7 +177,6 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                                 } else {
                                     organizations[j] = new Organization(organizationName, organizationURL, positions);
                                 }
-
                             }
                             r.addSection(SectionType.valueOf(sectionType), new OrganizationSection(organizations));
                             break;
