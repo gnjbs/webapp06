@@ -69,9 +69,7 @@ public abstract class AbstractStorageTest {
         R1.addSection(SectionType.QUALIFICATIONS, new MultiTextSection("Java", "SQL"));
         R1.addSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
-                        new Organization("Organization11", null,
-                                new Organization.Position(2005, Month.JANUARY, "position1", "content1"),
-                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "position2", "content2"))));
+                        ));
         R1.addSection(SectionType.EDUCATION,
                 new OrganizationSection(
                         new Organization("Institute", null,

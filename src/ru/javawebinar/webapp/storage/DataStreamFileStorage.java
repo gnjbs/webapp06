@@ -79,23 +79,22 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                         case EXPERIENCE:
                         case EDUCATION:
                             List<Organization> organizations = ((OrganizationSection) entry.getValue()).getOrganizations();
-                            if (organizations.size() > 0) {
-                                dos.writeInt(organizations.size());
-                                for (Organization organization : organizations) {
-                                    dos.writeUTF((organization.getHomePage().getName() == null)
-                                            ? zero : organization.getHomePage().getName());
-                                    dos.writeUTF((organization.getHomePage().getUrl() == null)
-                                            ? zero : organization.getHomePage().getUrl());
-                                    List<Organization.Position> positions = organization.getPositions();
-                                    dos.writeInt(positions.size());
-                                    for (Organization.Position position : positions) {
-                                        dos.writeUTF(position.getStartDate() == null ? zero : position.getStartDate().toString());
-                                        dos.writeUTF(position.getEndDate() == null ? zero : position.getEndDate().toString());
-                                        dos.writeUTF(position.getTitle() == null ? zero : position.getTitle());
-                                        dos.writeUTF(position.getDescription() == null ? zero : position.getDescription());
-                                    }
+                            dos.writeInt(organizations.size());
+                            for (Organization organization : organizations) {
+                                dos.writeUTF((organization.getHomePage().getName() == null)
+                                        ? zero : organization.getHomePage().getName());
+                                dos.writeUTF((organization.getHomePage().getUrl() == null)
+                                        ? zero : organization.getHomePage().getUrl());
+                                List<Organization.Position> positions = organization.getPositions();
+                                dos.writeInt(positions.size());
+                                for (Organization.Position position : positions) {
+                                    dos.writeUTF(position.getStartDate() == null ? zero : position.getStartDate().toString());
+                                    dos.writeUTF(position.getEndDate() == null ? zero : position.getEndDate().toString());
+                                    dos.writeUTF(position.getTitle() == null ? zero : position.getTitle());
+                                    dos.writeUTF(position.getDescription() == null ? zero : position.getDescription());
                                 }
                             }
+
                             break;
                     }
                 }
@@ -151,14 +150,13 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                                         String positionDescription = isNull(dis.readUTF());
                                         positions[k] = new Organization.Position(startDate, endDate, positionTitle, positionDescription);
                                     }
-                                } else if (numberOfPositions == 0) {
-                                    positions = null;
                                 }
-
                                 if (positions == null) {
                                     organizations[j] = new Organization(organizationName, organizationURL);
-                                } else {
+                                }
+                                else {
                                     organizations[j] = new Organization(organizationName, organizationURL, positions);
+                                    positions = null;
                                 }
                             }
                             r.addSection(SectionType.valueOf(sectionTypeValue), new OrganizationSection(organizations));
