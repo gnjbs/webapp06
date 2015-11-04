@@ -34,8 +34,14 @@ public abstract class AbstractFileStorage extends AbstractStorage<File>{
     }
 
     @Override
-    protected void doUpdate(Resume r, File ctx) {
-
+    protected void doUpdate(Resume r, File file) {
+        //TODO или нужно ? сначало load, затем перезапись полей, потом save?
+        Resume loadResume = doLoad(r.getUuid(), file);
+        if (loadResume.equals(r)) {
+        } else {
+            doDelete(r.getUuid(), file);
+            doSave(r, file);
+        }
     }
 
     @Override

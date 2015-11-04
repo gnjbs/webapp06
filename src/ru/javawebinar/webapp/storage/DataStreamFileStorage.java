@@ -63,24 +63,23 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                 }
                 //Write Sections
                 dos.writeInt(r.getSections().size());
-
                 for (Map.Entry<SectionType, Section> entry : r.getSections().entrySet()) {
                     dos.writeUTF(entry.getKey().name());
                     dos.writeUTF(entry.getValue().getClass().getSimpleName());
-                    switch (entry.getValue().getClass().getSimpleName()) {
-                        case "TextSection":
+                    switch (entry.getKey()) {
+                        case OBJECTIVE:
                             dos.writeUTF(((TextSection) entry.getValue()).getContent());
                             break;
-                        case "MultiTextSection":
+                        case ACHIEVEMENT:
+                        case QUALIFICATIONS:
                             List<String> lines = ((MultiTextSection) entry.getValue()).getLines();
                             dos.writeInt(lines.size());
-                            if (lines.size() > 0) {
-                                for (String line : lines) {
-                                    dos.writeUTF(line);
-                                }
+                            for (String line : lines) {
+                                dos.writeUTF(line);
                             }
                             break;
-                        case "OrganizationSection":
+                        case EXPERIENCE:
+                        case EDUCATION:
                             List<Organization> organizations = ((OrganizationSection) entry.getValue()).getOrganizations();
                             if (organizations.size() > 0) {
                                 dos.writeInt(organizations.size());
@@ -102,25 +101,10 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                             break;
                     }
                 }
-
             }
-            //TODO implements section
         } catch (IOException e) {
             throw new WebAppException(ExceptionType.IO_ERROR, r.getUuid());
         }
-    }
-
-    @Override
-    protected void doUpdate(Resume r, File file) {
-        //TODO или нужно ? сначало load, затем перезапись полей, потом save?
-        Resume loadResume = doLoad(r.getUuid(), file);
-        if (loadResume.equals(r)) {
-        } else {
-            doDelete(r.getUuid(), file);
-            doSave(r, file);
-        }
-
-
     }
 
     @Override
@@ -182,7 +166,6 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                             break;
                     }
                 }
-                //TODO implements section
                 return r;
             }
         } catch (IOException e) {
