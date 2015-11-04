@@ -61,11 +61,9 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                     dos.writeUTF(entry.getKey().name());
                     dos.writeUTF(entry.getValue());
                 }
-                //Write Sections
                 dos.writeInt(r.getSections().size());
                 for (Map.Entry<SectionType, Section> entry : r.getSections().entrySet()) {
                     dos.writeUTF(entry.getKey().name());
-                    dos.writeUTF(entry.getValue().getClass().getSimpleName());
                     switch (entry.getKey()) {
                         case OBJECTIVE:
                             dos.writeUTF(((TextSection) entry.getValue()).getContent());
@@ -119,13 +117,13 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                 }
                 int sectionSize = dis.readInt();
                 for (int i = 0; i < sectionSize; i++) {
-                    String sectionType = dis.readUTF();
-                    String section = dis.readUTF();
-                    switch (section) {
-                        case "TextSection":
-                            r.addSection(SectionType.valueOf(sectionType), new TextSection(dis.readUTF()));
+                    String sectionTypeValue = dis.readUTF();
+                    switch (sectionTypeValue) {
+                        case "OBJECTIVE":
+                            r.addSection(SectionType.valueOf(sectionTypeValue), new TextSection(dis.readUTF()));
                             break;
-                        case "MultiTextSection":
+                        case "ACHIEVEMENT":
+                        case "QUALIFICATIONS":
                             int numberOfMultiTextSection = dis.readInt();
                             List<String> mtsList = new ArrayList<>();
                             if (numberOfMultiTextSection > 0) {
@@ -133,9 +131,10 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                                     mtsList.add(dis.readUTF());
                                 }
                             }
-                            r.addSection(SectionType.valueOf(sectionType), new MultiTextSection(mtsList));
+                            r.addSection(SectionType.valueOf(sectionTypeValue), new MultiTextSection(mtsList));
                             break;
-                        case "OrganizationSection":
+                        case "EXPERIENCE":
+                        case "EDUCATION":
                             int numberOfOrganization = dis.readInt();
                             Organization[] organizations = new Organization[numberOfOrganization];
                             Organization.Position[] positions = null;
@@ -162,7 +161,7 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                                     organizations[j] = new Organization(organizationName, organizationURL, positions);
                                 }
                             }
-                            r.addSection(SectionType.valueOf(sectionType), new OrganizationSection(organizations));
+                            r.addSection(SectionType.valueOf(sectionTypeValue), new OrganizationSection(organizations));
                             break;
                     }
                 }
