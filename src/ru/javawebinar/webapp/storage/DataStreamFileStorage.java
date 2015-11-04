@@ -18,8 +18,11 @@ import java.util.Map;
 public class DataStreamFileStorage extends AbstractFileStorage {
 
     protected final File directory;
-    protected final String zero = "$%$";
-    protected final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    @Override
+    protected File getContext(String uuid) {
+        return new File(directory, uuid);
+    }
 
     public DataStreamFileStorage(String path) {
         directory = new File(path);
@@ -28,25 +31,6 @@ public class DataStreamFileStorage extends AbstractFileStorage {
         }
     }
 
-    @Override
-    protected File getContext(String uuid) {
-        return new File(directory, uuid);
-    }
-
-    @Override
-    protected boolean exist(String uuid, File file) {
-        return file.isFile();
-    }
-
-    @Override
-    protected void doClear() {
-        File[] files = directory.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                doDelete(file.getName(), file);
-            }
-        }
-    }
 
     @Override
     protected void doSave(Resume r, File file) {
@@ -189,7 +173,6 @@ public class DataStreamFileStorage extends AbstractFileStorage {
     public String isNull(String something) {
         if (something.equals(zero)) {
             something = null;
-
         }
         return something;
     }
