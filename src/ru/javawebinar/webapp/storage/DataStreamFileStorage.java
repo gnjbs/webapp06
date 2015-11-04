@@ -141,20 +141,17 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                                 String organizationName = isNull(dis.readUTF());
                                 String organizationURL = isNull(dis.readUTF());
                                 int numberOfPositions = dis.readInt();
-                                if (numberOfPositions > 0) {
-                                    positions = new Organization.Position[numberOfPositions];
-                                    for (int k = 0; k < numberOfPositions; k++) {
-                                        LocalDate startDate = LocalDate.parse(dis.readUTF(), formatter);
-                                        LocalDate endDate = LocalDate.parse(dis.readUTF(), formatter);
-                                        String positionTitle = isNull(dis.readUTF());
-                                        String positionDescription = isNull(dis.readUTF());
-                                        positions[k] = new Organization.Position(startDate, endDate, positionTitle, positionDescription);
-                                    }
+                                positions = new Organization.Position[numberOfPositions];
+                                for (int k = 0; k < numberOfPositions; k++) {
+                                    LocalDate startDate = LocalDate.parse(dis.readUTF(), formatter);
+                                    LocalDate endDate = LocalDate.parse(dis.readUTF(), formatter);
+                                    String positionTitle = isNull(dis.readUTF());
+                                    String positionDescription = isNull(dis.readUTF());
+                                    positions[k] = new Organization.Position(startDate, endDate, positionTitle, positionDescription);
                                 }
                                 if (positions == null) {
                                     organizations[j] = new Organization(organizationName, organizationURL);
-                                }
-                                else {
+                                } else {
                                     organizations[j] = new Organization(organizationName, organizationURL, positions);
                                     positions = null;
                                 }
