@@ -3,7 +3,6 @@ package ru.javawebinar.webapp.storage;
 import ru.javawebinar.webapp.model.Resume;
 
 import java.io.File;
-import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -16,6 +15,8 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     protected final String zero = "$%$";
     protected final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+
 
     @Override
     protected boolean exist(String uuid, File file) {

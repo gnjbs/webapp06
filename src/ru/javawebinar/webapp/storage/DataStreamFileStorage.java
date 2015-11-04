@@ -31,6 +31,15 @@ public class DataStreamFileStorage extends AbstractFileStorage {
         }
     }
 
+    @Override
+    protected void doClear() {
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                doDelete(file.getName(), file);
+            }
+        }
+    }
 
     @Override
     protected void doSave(Resume r, File file) {
