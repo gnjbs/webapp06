@@ -149,12 +149,8 @@ public class DataStreamFileStorage extends AbstractFileStorage {
                                     String positionDescription = isNull(dis.readUTF());
                                     positions[k] = new Organization.Position(startDate, endDate, positionTitle, positionDescription);
                                 }
-                                if (positions == null) {
-                                    organizations[j] = new Organization(organizationName, organizationURL);
-                                } else {
-                                    organizations[j] = new Organization(organizationName, organizationURL, positions);
-                                    positions = null;
-                                }
+                                organizations[j] = new Organization(organizationName, organizationURL, positions);
+                                positions = null;
                             }
                             r.addSection(SectionType.valueOf(sectionTypeValue), new OrganizationSection(organizations));
                             break;
