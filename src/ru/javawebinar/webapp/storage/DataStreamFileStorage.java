@@ -17,19 +17,14 @@ import java.util.Map;
  */
 public class DataStreamFileStorage extends AbstractFileStorage {
 
-    protected final File directory;
-
-    @Override
-    protected File getContext(String uuid) {
-        return new File(directory, uuid);
-    }
 
     public DataStreamFileStorage(String path) {
-        directory = new File(path);
-        if (!directory.isDirectory()) {
-            throw new IllegalArgumentException(path + " is not directory");
-        }
+        super(path);
     }
+
+
+
+
 
     @Override
     protected void doClear() {

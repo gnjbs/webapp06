@@ -8,6 +8,13 @@ public class WebAppException extends RuntimeException {
     private final String uuid;
     private ExceptionType type;
 
+    public WebAppException(ExceptionType type, String uuid, Exception e) {
+        super(type.getMessage(), e);
+        this.type = type;
+        this.uuid = uuid;
+    }
+
+
     public WebAppException(ExceptionType type, String uuid) {
         super(type.getMessage());
         this.type = type;

@@ -15,8 +15,21 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     protected final String zero = "$%$";
     protected final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    protected final File directory;
 
 
+
+    public AbstractFileStorage(String path) {
+        directory = new File(path);
+        if (!directory.isDirectory()) {
+            throw new IllegalArgumentException(path + " is not directory");
+        }
+    }
+
+    @Override
+    protected File getContext(String uuid) {
+        return new File(directory, uuid);
+    }
 
     @Override
     protected boolean exist(String uuid, File file) {
