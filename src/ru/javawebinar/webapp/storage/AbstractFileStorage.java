@@ -1,9 +1,12 @@
 package ru.javawebinar.webapp.storage;
 
+import ru.javawebinar.webapp.exceptions.ExceptionType;
+import ru.javawebinar.webapp.exceptions.WebAppException;
 import ru.javawebinar.webapp.model.Resume;
 
-import java.io.File;
+import java.io.*;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +20,23 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     protected final File directory;
 
+
+    @Override
+    protected void doClear() {
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                doDelete(file.getName(), file);
+            }
+        }
+    }
+
+    @Override
+    protected void doDelete(String uuid, File file) {
+        if (!file.delete()) {
+            throw new WebAppException(ExceptionType.IO_ERROR, uuid);
+        }
+    }
 
 
     public AbstractFileStorage(String path) {
@@ -36,43 +56,60 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         return file.isFile();
     }
 
-    @Override
-    protected void doClear() {
-
-    }
 
     @Override
-    protected void doSave(Resume r, File ctx) {
+    protected void doSave(Resume r, File file) {
+        try {
+            if (!file.createNewFile()) {
+                throw new WebAppException(ExceptionType.IO_ERROR, r.getUuid());
+            }
 
+        } catch (IOException e) {
+            throw new WebAppException(ExceptionType.IO_ERROR, r.getUuid());
+        }
+        doUpdate(r, file);
     }
+
+    protected abstract void write(Resume r, OutputStream os);
+
 
     @Override
     protected void doUpdate(Resume r, File file) {
-        Resume loadResume = doLoad(r.getUuid(), file);
-        if (loadResume.equals(r)) {
-        } else {
-            doDelete(r.getUuid(), file);
-            doSave(r, file);
+        try {
+            write(r, new BufferedOutputStream(new FileOutputStream(file)));
+        } catch (IOException e) {
+            throw new WebAppException(ExceptionType.IO_ERROR, r.getUuid(), e);
         }
     }
 
     @Override
-    protected Resume doLoad(String uuid, File ctx) {
-        return null;
+    protected Resume doLoad(File file) {
+        try {
+            return read(new BufferedInputStream(new FileInputStream(file)));
+        } catch (IOException e) {
+            throw new WebAppException(ExceptionType.IO_ERROR, file.getName(), e);
+        }
     }
 
-    @Override
-    protected void doDelete(String uuid, File ctx) {
+    protected abstract Resume read(InputStream is);
 
-    }
 
     @Override
     protected List<Resume> doGetAll() {
-        return null;
+        File[] files = directory.listFiles();
+        if (files == null) {
+            throw new WebAppException(ExceptionType.IO_ERROR, null);
+        }
+        List<Resume> list = new ArrayList<>(files.length);
+        for (File file : files) {
+            list.add(doLoad(file));
+        }
+        return list;
     }
 
     @Override
     public int size() {
-        return 0;
+        File[] files = directory.listFiles();
+        return files.length;
     }
 }
