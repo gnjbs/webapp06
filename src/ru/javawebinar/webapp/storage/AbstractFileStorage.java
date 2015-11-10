@@ -16,8 +16,8 @@ import java.util.List;
 //TODO implements. Handle all IOException here
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
-    protected final String zero = "$%$";
-    protected final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    //protected final String zero = "$%$";
+    //protected final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     protected final File directory;
 
 
@@ -32,9 +32,9 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    protected void doDelete(String uuid, File file) {
+    protected void doDelete(File file) {
         if (!file.delete()) {
-            throw new WebAppException(ExceptionType.IO_ERROR, uuid);
+            throw new WebAppException(ExceptionType.IO_ERROR, file.getName());
         }
     }
 
@@ -52,7 +52,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    protected boolean exist(String uuid, File file) {
+    protected boolean exist(File file) {
         return file.isFile();
     }
 

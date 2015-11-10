@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * GKislin
@@ -32,8 +33,12 @@ public class DataStreamFileStorage extends AbstractFileStorage {
         return null;
     }
 
-    @Override
-    protected Resume doLoad(String uuid, File ctx) {
-        return null;
+    private <T> List<T> readList(DataInputStream dis, Supplier<T> supplier) throws IOException {
+        int size = dis.readInt();
+        List<T> list = new ArrayList<>(size);
+        for (int i = 0; i <size ; i++) {
+            list.add(supplier.get());
+        }
+        return list;
     }
 }

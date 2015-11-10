@@ -20,7 +20,7 @@ public abstract class AbstractStorage<C> implements IStorage {
     //    private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
     protected final Logger log = Logger.getLogger(getClass().getName());
 
-    protected abstract boolean exist(String uuid, C ctx);
+    protected abstract boolean exist(C ctx);
 
     @Override
     public void clear() {
@@ -64,10 +64,10 @@ public abstract class AbstractStorage<C> implements IStorage {
         requireNonNull(uuid, "UUID must not be null");
         C ctx = getContext(uuid);
         mustExist(uuid, ctx);
-        return doLoad(uuid, ctx);
+        return doLoad(ctx);
     }
 
-    protected abstract Resume doLoad(String uuid, C ctx);
+    protected abstract Resume doLoad(C ctx);
 
     @Override
     public void delete(String uuid) {
@@ -75,10 +75,10 @@ public abstract class AbstractStorage<C> implements IStorage {
         requireNonNull(uuid, "UUID must not be null");
         C ctx = getContext(uuid);
         mustExist(uuid, ctx);
-        doDelete(uuid, ctx);
+        doDelete(ctx);
     }
 
-    protected abstract void doDelete(String uuid, C ctx);
+    protected abstract void doDelete(C ctx);
 
     @Override
     public Collection<Resume> getAllSorted() {
@@ -96,13 +96,13 @@ public abstract class AbstractStorage<C> implements IStorage {
     protected abstract List<Resume> doGetAll();
 
     private void mustNotExist(String uuid, C ctx) {
-        if (exist(uuid, ctx)) {
+        if (exist(ctx)) {
             throw new WebAppException(ExceptionType.ALREADY_EXISTS, uuid);
         }
     }
 
     private void mustExist(String uuid, C ctx) {
-        if (!exist(uuid, ctx)) {
+        if (!exist(ctx)) {
             throw new WebAppException(ExceptionType.NOT_FOUND, uuid);
         }
     }
