@@ -26,7 +26,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         File[] files = directory.listFiles();
         if (files != null) {
             for (File file : files) {
-                doDelete(file.getName(), file);
+                doDelete(file);
             }
         }
     }
@@ -70,7 +70,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         doUpdate(r, file);
     }
 
-    protected abstract void write(Resume r, OutputStream os);
+    protected abstract void write(Resume r, OutputStream os) throws IOException;
 
 
     @Override
@@ -91,7 +91,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         }
     }
 
-    protected abstract Resume read(InputStream is);
+    protected abstract Resume read(InputStream is) throws IOException;
 
 
     @Override
