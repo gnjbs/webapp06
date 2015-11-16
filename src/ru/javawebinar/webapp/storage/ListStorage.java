@@ -10,7 +10,7 @@ public class ListStorage extends AbstractStorage<Integer> {
     private List<Resume> list = new ArrayList<>();
 
     @Override
-    protected boolean exist(String uuid, Integer idx) {
+    protected boolean exist(Integer idx) {
         return idx >= 0;
     }
 
@@ -40,12 +40,12 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected Resume doLoad(String uuid, Integer idx) {
+    protected Resume doLoad(Integer idx) {
         return list.get(idx);
     }
 
     @Override
-    protected void doDelete(String uuid, Integer idx) {
+    protected void doDelete(Integer idx) {
         list.remove((idx).intValue());
     }
 

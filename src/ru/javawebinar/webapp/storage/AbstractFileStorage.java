@@ -5,7 +5,6 @@ import ru.javawebinar.webapp.exceptions.WebAppException;
 import ru.javawebinar.webapp.model.Resume;
 
 import java.io.*;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,10 +15,7 @@ import java.util.List;
 //TODO implements. Handle all IOException here
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
-    //protected final String zero = "$%$";
-    //protected final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     protected final File directory;
-
 
     @Override
     protected void doClear() {

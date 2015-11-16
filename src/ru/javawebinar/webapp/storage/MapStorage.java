@@ -16,12 +16,11 @@ public class MapStorage extends AbstractStorage<String> {
     private Map<String, Resume> map = new HashMap<>();
 
     @Override
-    protected boolean exist(String uuid, String ctx) {
+    protected boolean exist(String uuid) {
         return map.containsKey(uuid);
     }
 
     @Override
-    //TODO Optional investigate context as Map.Entry
     protected String getContext(String uuid) {
         return uuid;
     }
@@ -42,12 +41,12 @@ public class MapStorage extends AbstractStorage<String> {
     }
 
     @Override
-    protected Resume doLoad(String uuid, String ctx) {
+    protected Resume doLoad(String uuid) {
         return map.get(uuid);
     }
 
     @Override
-    protected void doDelete(String uuid, String ctx) {
+    protected void doDelete(String uuid) {
         map.remove(uuid);
     }
 

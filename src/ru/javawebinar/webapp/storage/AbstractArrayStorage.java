@@ -11,16 +11,14 @@ import java.util.List;
  * GKislin
  * 09.10.2015.
  */
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected static final int MAX_LENGTH = 100000;
     protected final Resume[] array = new Resume[MAX_LENGTH];
     protected int currentSize = 0;
 
-    protected abstract int getIndex(String uuid);
-
     @Override
-    protected boolean exist(String uuid, Object ctx) {
-        return getIndex(uuid) >= 0;
+    protected boolean exist(Integer idx) {
+        return idx >= 0;
     }
 
     @Override
@@ -32,13 +30,13 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected abstract void set(int idx, Resume r);
 
     @Override
-    protected Resume doLoad(String uuid, Object ctx) {
-        return array[getIndex(uuid)];
+    protected Resume doLoad(Integer idx) {
+        return array[idx];
     }
 
     @Override
-    protected void doUpdate(Resume r, Object ctx) {
-        set(getIndex(r.getUuid()), r);
+    protected void doUpdate(Resume r, Integer idx) {
+        set(idx, r);
     }
 
     @Override
@@ -58,4 +56,3 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         }
     }
 }
-
